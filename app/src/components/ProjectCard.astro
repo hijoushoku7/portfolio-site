@@ -1,0 +1,91 @@
+---
+// ▼ 制作物カード
+//   画像 + タイトル + 説明。全体に統一の二重シャドウを付け、
+//   「コラージュに貼り付けたプリント」感を出す（DESIGN.md 第4・5章）。
+const { title, description, tags = [], href = '#' } = Astro.props;
+---
+
+<a class="card" href={href}>
+	<div class="card__thumb">
+		<span class="card__placeholder">IMAGE</span>
+	</div>
+	<div class="card__body">
+		<h3 class="card__title">{title}</h3>
+		<p class="card__desc">{description}</p>
+		{tags.length > 0 && (
+			<ul class="card__tags">
+				{tags.map((t: string) => <li>{t}</li>)}
+			</ul>
+		)}
+	</div>
+</a>
+
+<style>
+	.card {
+		display: grid;
+		grid-template-columns: 120px 1fr;
+		gap: 1rem;
+		padding: 0.8rem;
+		background: var(--paper);
+		text-decoration: none;
+		color: var(--color);
+		box-shadow: var(--shadow-2);
+		transition: transform 0.3s, box-shadow 0.3s;
+	}
+
+	.card:hover {
+		transform: scale(1.02);
+		box-shadow: var(--shadow-2-hover);
+	}
+	.card:active {
+		transform: scale(0.98);
+		box-shadow: var(--shadow-2-active);
+	}
+
+	.card__thumb {
+		aspect-ratio: 1;
+		display: grid;
+		place-items: center;
+		border: 2px dashed var(--color);
+	}
+
+	.card__placeholder {
+		font-family: var(--font-pixel);
+		font-size: 0.7rem;
+		opacity: 0.5;
+	}
+
+	.card__title {
+		font-family: var(--font-pixel);
+		font-size: 0.95rem;
+		margin: 0 0 0.5rem;
+	}
+
+	.card__desc {
+		font-family: var(--font-body);
+		font-size: 0.9rem;
+		line-height: 1.7;
+		margin: 0 0 0.7rem;
+	}
+
+	.card__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.card__tags li {
+		font-family: var(--font-pixel);
+		font-size: 0.6rem;
+		padding: 0.25rem 0.4rem;
+		border: 1px dashed var(--color);
+	}
+
+	@media (max-width: 480px) {
+		.card {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

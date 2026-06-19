@@ -1,0 +1,71 @@
+---
+// ▼ ヒーローセクション
+//   本来はWebGLの3Dレトロコンピュータ。今回は実装せず、背景の mainBackground.png を
+//   そのまま主役にして「コンピュータの中の世界」の雰囲気だけを残す。
+//   タイトルは DESIGN.md 第3章の「背景色を塗ったラベルタグ風」見出しで表示。
+const { name = 'HIJOUSHOKU', title = 'PORTFOLIO' } = Astro.props;
+---
+
+<section class="hero">
+	<div class="hero__inner">
+		<p class="hero__tag">{title}</p>
+		<h1 class="label hero__name">{name}</h1>
+		<p class="hero__sub">Information Science Faculty Student</p>
+	</div>
+	<div class="hero__scroll">scroll ↓</div>
+</section>
+
+<style>
+	.hero {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		position: relative;
+		padding: 1.5rem;
+	}
+
+	.hero__inner {
+		display: grid;
+		gap: 1rem;
+		justify-items: center;
+	}
+
+	.hero__tag {
+		font-family: var(--font-pixel);
+		font-size: 0.8rem;
+		letter-spacing: 0.3em;
+		color: var(--color);
+		margin: 0;
+	}
+
+	.hero__name {
+		font-size: clamp(2rem, 9vw, 4rem);
+	}
+
+	.hero__sub {
+		font-family: var(--font-pixel);
+		font-size: 0.75rem;
+		color: var(--color);
+		background: var(--paper);
+		padding: 0.4rem 0.6rem;
+		box-shadow: var(--shadow-2);
+		margin: 0;
+	}
+
+	.hero__scroll {
+		position: absolute;
+		bottom: 1.5rem;
+		font-family: var(--font-pixel);
+		font-size: 0.7rem;
+		color: var(--color);
+		animation: bob 1.4s ease-in-out infinite;
+	}
+
+	@keyframes bob {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(6px); }
+	}
+</style>

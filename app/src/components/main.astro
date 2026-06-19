@@ -1,0 +1,163 @@
+---
+// ▼ コンポーネントスクリプト（ビルド時に実行）
+//   ページ全体の骨格をここで組み立てる。細かいパーツは components/ に分離済み。
+//   DESIGN.md の世界観を「グレー2トーン」で抽出したプロトタイプ。
+//   レトロPC(WebGL)部分は実装せず、背景は public/mainBackground.png を使用。
+import Nav from './Nav.astro';
+import Hero from './Hero.astro';
+import Section from './Section.astro';
+import ProjectCard from './ProjectCard.astro';
+import SkillTag from './SkillTag.astro';
+import Footer from './Footer.astro';
+
+const name = 'HIJOUSHOKU';
+const title = 'PORTFOLIO';
+
+const projects = [
+	{
+		title: 'Project Alpha',
+		description: 'プロジェクトの概要をここに書く。何を作り、何を解決したか。',
+		tags: ['Astro', 'TypeScript'],
+	},
+	{
+		title: 'Project Beta',
+		description: 'プロジェクトの概要をここに書く。担当範囲や工夫した点など。',
+		tags: ['React', 'CSS'],
+	},
+	{
+		title: 'Project Gamma',
+		description: 'プロジェクトの概要をここに書く。リンク先で詳細を見せる想定。',
+		tags: ['Node', 'API'],
+	},
+];
+
+const skills = [
+	'HTML', 'CSS', 'JavaScript', 'TypeScript', 'React',
+	'Astro', 'Node.js', 'Git', 'Figma',
+];
+---
+
+<Nav />
+
+<main>
+	<Hero name={name} title={title} />
+
+	<div class="content">
+		<Section id="about" heading="About">
+			<p>
+				ここに自己紹介を書く。何をしている人で、何が得意で、どんなことに
+				興味があるのか。読みやすいサンセリフで、ピクセル見出しと対比をつける。
+			</p>
+		</Section>
+
+		<Section id="works" heading="Works">
+			<div class="works__grid">
+				{projects.map((p) => (
+					<ProjectCard
+						title={p.title}
+						description={p.description}
+						tags={p.tags}
+					/>
+				))}
+			</div>
+		</Section>
+
+		<Section id="skills" heading="Skills">
+			<div class="skills__list">
+				{skills.map((s) => <SkillTag label={s} />)}
+			</div>
+		</Section>
+
+		<Section id="contact" heading="Contact">
+			<p>連絡先や各種リンクをここに置く。</p>
+			<p>
+				<a class="link" href="mailto:you@example.com">you@example.com</a>
+			</p>
+		</Section>
+	</div>
+
+	<Footer />
+</main>
+
+<!-- ▼ グローバルスタイル：CSS変数・背景画像・共通ユーティリティ -->
+<style is:global>
+	:root {
+		/* メインカラー＝グレー2トーン（純白/純黒を避ける） */
+		--color: #525252; /* 前景・テキスト・枠線（ダークグレー） */
+		--paper: #e6e6e6; /* カード/ラベルの地（ライトグレー、旧ベージュの代わり） */
+		--edge: #cfcfcf; /* 1pxの薄い縁取り */
+
+		/* DESIGN.md 第4章の二重シャドウ（グレー版） */
+		--shadow-2: 1px 1px 0 var(--edge), 6px 6px 0 rgba(82, 82, 82, 0.25);
+		--shadow-2-hover: 1px 1px 0 var(--edge), 8px 8px 0 rgba(82, 82, 82, 0.25);
+		--shadow-2-active: 1px 1px 0 var(--edge), 3px 3px 0 rgba(82, 82, 82, 0.25);
+
+		--font-pixel: 'MinecraftiaRegular', 'DotGothic16', 'Courier New', monospace;
+		--font-body: 'Zen Kaku Gothic New', system-ui, sans-serif;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		color: var(--color);
+		font-family: var(--font-body);
+		/* 背景＝mainBackground.png（レトロPCの代わりの主役） */
+		background-image: url('/mainBackground.png');
+		background-size: cover;
+		background-position: center;
+		background-attachment: fixed;
+		background-color: #b8b8b8; /* 画像読込前/余白のフォールバック（グレー） */
+	}
+
+	/* ラベルタグ風の見出し：背景色を塗ってネガ表示（DESIGN.md 第3章） */
+	.label {
+		display: inline-block;
+		font-family: var(--font-pixel);
+		color: var(--paper);
+		background: var(--color);
+		padding: 0.4rem 0.7rem;
+		margin: 0;
+		line-height: 1.2;
+		box-shadow: var(--shadow-2);
+	}
+
+	/* 本文リンクのホバー（持ち上がる挙動） */
+	.link {
+		font-family: var(--font-body);
+		color: var(--color);
+		background: var(--paper);
+		text-decoration: none;
+		padding: 0.15rem 0.4rem;
+		box-shadow: var(--shadow-2);
+		transition: transform 0.3s, box-shadow 0.3s;
+		display: inline-block;
+	}
+	.link:hover {
+		transform: scale(1.1);
+		box-shadow: var(--shadow-2-hover);
+	}
+</style>
+
+<!-- ▼ このコンポーネント固有のスタイル（スコープ付き） -->
+<style>
+	/* 本文セクションは半透明のライトグレー帯を敷いて可読性を確保 */
+	.content {
+		background: rgba(230, 230, 230, 0.82);
+		border-top: 2px dashed var(--color);
+		border-bottom: 2px dashed var(--color);
+	}
+
+	.works__grid {
+		display: grid;
+		gap: 1.2rem;
+	}
+
+	.skills__list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+	}
+</style>

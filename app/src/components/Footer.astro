@@ -1,0 +1,26 @@
+---
+// ▼ フッター
+//   小さい文字でプレーンに積む（DESIGN.md 第5章）。
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+	<p>© {year} Your Name</p>
+	<p>Built with Astro — Zine / Retro inspired layout</p>
+</footer>
+
+<style>
+	.footer {
+		width: clamp(0px, 95vw, 680px);
+		margin: 0 auto;
+		padding: 2rem 0 3rem;
+		text-align: center;
+	}
+
+	.footer p {
+		font-family: var(--font-body);
+		font-size: 12px;
+		color: var(--color);
+		margin: 0.2rem 0;
+	}
+</style>
