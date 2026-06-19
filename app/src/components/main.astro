@@ -15,19 +15,28 @@ const title = 'PORTFOLIO';
 
 const projects = [
 	{
-		title: 'Project Alpha',
-		description: 'プロジェクトの概要をここに書く。何を作り、何を解決したか。',
-		tags: ['Astro', 'TypeScript'],
+		title: '自宅サーバー構築',
+		description: 'Proxmox VEを利用し、自宅に24時間起動するサーバーを構築',
+		tags: ['Docker','Ubuntu'],
+		overview: 'Proxmox VEを使ってUbuntuのゲームサーバーと複数のwebサービスをホストしています。webサーバーはcloudflare tunnelを利用してポート開放を行わず外部公開しており、リバースプロキシを使ってルーティングを行っています。またtailscaleを利用したVPNサーバーにより、安全なSSH接続で操作をしています。',
+		mechanism: 'どんな仕組みで動いているかをここに書く。',
+		images: ['home-server.png'] as string[], // 例: ['/works/alpha-1.png', '/works/alpha-2.png']
 	},
 	{
 		title: 'Project Beta',
 		description: 'プロジェクトの概要をここに書く。担当範囲や工夫した点など。',
 		tags: ['React', 'CSS'],
+		overview: '何を作ったかをここに書く。',
+		mechanism: 'どんな仕組みで動いているかをここに書く。',
+		images: [] as string[],
 	},
 	{
 		title: 'Project Gamma',
 		description: 'プロジェクトの概要をここに書く。リンク先で詳細を見せる想定。',
 		tags: ['Node', 'API'],
+		overview: '何を作ったかをここに書く。',
+		mechanism: 'どんな仕組みで動いているかをここに書く。',
+		images: [] as string[],
 	},
 ];
 
@@ -45,18 +54,22 @@ const skills = [
 	<div class="content">
 		<Section id="about" heading="About">
 			<p>
-				ここに自己紹介を書く。何をしている人で、何が得意で、どんなことに
-				興味があるのか。読みやすいサンセリフで、ピクセル見出しと対比をつける。
+				こんにちは。非常食と呼ばれている大学生です。本名は怖いので書きません。技術が大好きで、未熟者ですがサーバーやWEB周りの技術を中心に学んでいます。
+				趣味は自作キーボード、ゲーム、古着などです。上は初めて作成したキーボードです。
 			</p>
 		</Section>
 
 		<Section id="works" heading="Works">
 			<div class="works__grid">
-				{projects.map((p) => (
+				{projects.map((p, i) => (
 					<ProjectCard
+						id={`work-${i}`}
 						title={p.title}
 						description={p.description}
 						tags={p.tags}
+						overview={p.overview}
+						mechanism={p.mechanism}
+						images={p.images}
 					/>
 				))}
 			</div>
@@ -104,12 +117,30 @@ const skills = [
 		margin: 0;
 		color: var(--color);
 		font-family: var(--font-body);
-		/* 背景＝mainBackground.png（レトロPCの代わりの主役） */
-		background-image: url('/mainBackground.png');
-		background-size: cover;
-		background-position: center;
-		background-attachment: fixed;
 		background-color: #b8b8b8; /* 画像読込前/余白のフォールバック（グレー） */
+	}
+
+	/* 背景画像レイヤー：最背面に固定（旧 background-attachment: fixed 相当） */
+	body::before {
+		content: '';
+		position: fixed;
+		inset: 0;
+		z-index: -2;
+		background: url('/mainBackground.png') center / cover no-repeat;
+	}
+
+	/* ベールレイヤー：mainBackground.png の上に paper.png を重ねる。
+	   opacity は JS がスクロール量から算出して --veil に設定する。
+	   スクロール最上部(0)では透明＝mainBackground.png が見え、
+	   Works セクションに到達した時点でほぼ paper.png 一色（0.97）になる。 */
+	body::after {
+		content: '';
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		background: url('/paper.png') center / cover no-repeat;
+		opacity: var(--veil, 0);
+		pointer-events: none;
 	}
 
 	/* ラベルタグ風の見出し：背景色を塗ってネガ表示（DESIGN.md 第3章） */
@@ -143,9 +174,9 @@ const skills = [
 
 <!-- ▼ このコンポーネント固有のスタイル（スコープ付き） -->
 <style>
-	/* 本文セクションは半透明のライトグレー帯を敷いて可読性を確保 */
+	/* 本文セクション。背景は body::after（paper.png のベール層）が
+	   スクロール量に応じて現れるため、ここは透明にしておく。 */
 	.content {
-		background: rgba(230, 230, 230, 0.82);
 		border-top: 2px dashed var(--color);
 		border-bottom: 2px dashed var(--color);
 	}
@@ -161,3 +192,22 @@ const skills = [
 		gap: 0.6rem;
 	}
 </style>
+
+<!-- ▼ ベール（背景の白み）をスクロール量から制御。
+     Works セクションに到達した時点で opacity が最大（ほぼグレー一色）になる。 -->
+<script>
+	const MAX = 0.97; // 最大の白さ（1で完全にグレー一色）
+
+	function update() {
+		const works = document.querySelector<HTMLElement>('#works');
+		if (!works) return;
+		// Works の開始位置までスクロールしたら MAX に到達させる
+		const target = works.offsetTop;
+		const p = target > 0 ? Math.min(window.scrollY / target, 1) : 1;
+		document.documentElement.style.setProperty('--veil', String(p * MAX));
+	}
+
+	addEventListener('scroll', update, { passive: true });
+	addEventListener('resize', update);
+	update();
+</script>

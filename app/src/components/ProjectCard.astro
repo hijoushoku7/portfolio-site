@@ -2,12 +2,28 @@
 // ▼ 制作物カード
 //   画像 + タイトル + 説明。全体に統一の二重シャドウを付け、
 //   「コラージュに貼り付けたプリント」感を出す（DESIGN.md 第4・5章）。
-const { title, description, tags = [], href = '#' } = Astro.props;
+//   クリックすると、同じ props を渡してビルド時にレンダリングしておいた
+//   Modal を JS で表示する（data-modal-open → Modal の id を指す）。
+import Modal from './Modal.astro';
+
+const {
+	id,
+	title,
+	description,
+	tags = [],
+	overview = '',
+	mechanism = '',
+	images = [],
+} = Astro.props;
 ---
 
-<a class="card" href={href}>
+<button class="card" type="button" data-modal-open={id}>
 	<div class="card__thumb">
-		<span class="card__placeholder">IMAGE</span>
+		{images.length > 0 ? (
+			<img class="card__thumb-img" src={images[0]} alt={title} loading="lazy" />
+		) : (
+			<span class="card__placeholder">IMAGE</span>
+		)}
 	</div>
 	<div class="card__body">
 		<h3 class="card__title">{title}</h3>
@@ -18,7 +34,16 @@ const { title, description, tags = [], href = '#' } = Astro.props;
 			</ul>
 		)}
 	</div>
-</a>
+</button>
+
+<Modal
+	id={id}
+	title={title}
+	tags={tags}
+	overview={overview}
+	mechanism={mechanism}
+	images={images}
+/>
 
 <style>
 	.card {
@@ -27,8 +52,13 @@ const { title, description, tags = [], href = '#' } = Astro.props;
 		gap: 1rem;
 		padding: 0.8rem;
 		background: var(--paper);
+		text-align: left;
 		text-decoration: none;
 		color: var(--color);
+		border: none;
+		width: 100%;
+		font: inherit;
+		cursor: pointer;
 		box-shadow: var(--shadow-2);
 		transition: transform 0.3s, box-shadow 0.3s;
 	}
@@ -53,6 +83,14 @@ const { title, description, tags = [], href = '#' } = Astro.props;
 		font-family: var(--font-pixel);
 		font-size: 0.7rem;
 		opacity: 0.5;
+	}
+
+	/* サムネイル写真：枠いっぱいに切り抜いて表示 */
+	.card__thumb-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 	}
 
 	.card__title {
@@ -89,3 +127,18 @@ const { title, description, tags = [], href = '#' } = Astro.props;
 		}
 	}
 </style>
+
+<!-- ▼ カードのクリックで対応するモーダル（#id）を開く。
+     Astro が同一スクリプトを1つに束ねるため、イベント委譲で全カードを処理。 -->
+<script>
+	document.addEventListener('click', (e) => {
+		const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-modal-open]');
+		if (!trigger) return;
+		const id = trigger.dataset.modalOpen;
+		if (!id) return;
+		const modal = document.getElementById(id);
+		if (!modal) return;
+		modal.hidden = false;
+		document.body.style.overflow = 'hidden';
+	});
+</script>
