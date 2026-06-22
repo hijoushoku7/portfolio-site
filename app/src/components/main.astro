@@ -38,6 +38,14 @@ const projects = [
 		mechanism: '・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。\n ・PRをスムーズに行うため、[詳細を聞く]ボタンを押すとさらに詳細な問題点やチェックすべき点を洗い出し、要約してくれます。 \n ・週に一度、誰が一番マージやプルリクエストを送信したかをランキングとして表示する機能も搭載しています。',
 		images: ['/works/image2.png'] as string[],
 	},
+	{
+		title: '自宅サーバー+tmuxで外からでもAI開発',
+		description: '自宅サーバーにtailscale+terminusを利用して接続できる開発環境',
+		tags: ['Terminus','tmux','ubuntu','tailscale','git','claude code','codex'],
+		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。',
+		mechanism: '\n ・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。 \n ・実際にwebアプリをデプロイするOSとは独立させているので、環境変数が盗まれることを防いでいます。',
+		images: [] as string[],
+	},
 ];
 
 /*
@@ -51,6 +59,41 @@ const projects = [
 	}
 */
 
+// ▼ 所属（学科・研究室・プロジェクトなど）。内容は後で差し替える想定のテンプレート。
+const affiliations = [
+	{
+		name: '同志社大学情報システムデザイン学科',
+		role: '学部2回生',
+		period: '2025.04 - 現在',
+		description: 'コンピューターサイエンスやプログラミング、大学数学などを中心に学んでいます。',
+	},
+	{
+		name: 'ローム記念館プロジェクト Campus Crew',
+		role: 'メンバー',
+		period: '2026.04~',
+		description: 'AIを用いたSNS開発や、マネジメントを中心に、企業を目指して活動しています。',
+	},
+];
+
+// ▼ Activities（ハッカソン・大会など）。内容は後で差し替える想定のテンプレート。
+const activities = [
+	{
+		title: 'Campus Crew ハッカソン',
+		date: '2026.6.22',
+		result: '優勝',
+		description: 'PR要約BOTと大学のシングルサインオンの認証簡略化chrome拡張機能',
+	}
+];
+
+// ▼ レベルの目安（凡例）。Skills 見出し直下に表示する。
+const levelLegend = [
+	{ level: 5, desc: 'その技術の概要や仕組みを完璧に理解している' },
+	{ level: 4, desc: 'その技術を使ってある程度プロジェクトを作れる' },
+	{ level: 3, desc: '概要は知っており、仕組みもある程度知識がある' },
+	{ level: 2, desc: '基本的な構文・使い方を触ったことがある程度' },
+	{ level: 1, desc: '名前を知っている・少し触れたことがある程度' },
+];
+
 // ▼ スキルはカテゴリ分け。各スキルに絵文字アイコンと習熟度(level 1〜5)を持たせる。
 const skillCategories = [
 	{
@@ -62,16 +105,16 @@ const skillCategories = [
 			{ label: 'TypeScript', icon: '🔷', level: 4 },
 			{ label: 'React', icon: '⚛️', level: 3 },
 			{ label: 'Next.js', icon: '▲', level: 3 },
-			{ label: 'Astro', icon: '🚀', level: 3 },
+			{ label: 'Astro', icon: '🚀', level: 2 },
 		],
 	},
 	{
 		name: 'Backend',
 		skills: [
 			{ label: 'Node.js', icon: '🟢', level: 3 },
-			{ label: 'PostgreSQL', icon: '🐘', level: 3 },
-			{ label: 'Prisma', icon: '🔺', level: 3 },
-			{ label: 'Auth.js', icon: '🔐', level: 3 },
+			{ label: 'PostgreSQL', icon: '🐘', level: 2 },
+			{ label: 'Prisma', icon: '🔺', level: 2 },
+			{ label: 'Auth.js', icon: '🔐', level: 1 },
 		],
 	},
 	{
@@ -89,10 +132,8 @@ const skillCategories = [
 	{
 		name: 'Other',
 		skills: [
-			{ label: 'Figma', icon: '🖋️', level: 3 },
-			{ label: 'Security', icon: '🛡️', level: 3 },
-			{ label: 'Français', icon: '🇫🇷', level: 5 },
-			{ label: 'English', icon: '🇬🇧', level: 3 },
+			{ label: 'Français', icon: '🇫🇷', level: 4 },
+			{ label: 'English', icon: 'ENG', level: 3 },
 		],
 	},
 ];
@@ -111,6 +152,18 @@ const skillCategories = [
 			</p>
 		</Section>
 
+		<Section id="affiliation" heading="Affiliation">
+			<div class="affiliation__list">
+				{affiliations.map((a) => (
+					<div class="affiliation__item">
+						<h3 class="affiliation__name">{a.name}</h3>
+						<p class="affiliation__meta">{a.role}・{a.period}</p>
+						<p class="affiliation__desc">{a.description}</p>
+					</div>
+				))}
+			</div>
+		</Section>
+
 		<Section id="works" heading="Works">
 			<div class="works__grid">
 				{projects.map((p, i) => (
@@ -127,7 +180,35 @@ const skillCategories = [
 			</div>
 		</Section>
 
+		<Section id="activities" heading="Activities">
+			<div class="activities__list">
+				{activities.map((a) => (
+					<div class="activities__item">
+						<h3 class="activities__title">{a.title}</h3>
+						<p class="activities__meta">{a.date}・{a.result}</p>
+						<p class="activities__desc">{a.description}</p>
+					</div>
+				))}
+			</div>
+		</Section>
+
 		<Section id="skills" heading="Skills">
+			<div class="skills__legend">
+				<p class="skills__legend-title">Level の目安</p>
+				<ul class="skills__legend-list">
+					{levelLegend.map((l) => (
+						<li class="skills__legend-item">
+							<span class="skills__legend-bar" aria-label={`Lv${l.level}`}>
+								{Array.from({ length: 5 }, (_, i) => (
+									<i class={i < l.level ? 'on' : ''}></i>
+								))}
+							</span>
+							<span class="skills__legend-desc">{l.desc}</span>
+						</li>
+					))}
+				</ul>
+			</div>
+
 			{skillCategories.map((cat) => (
 				<div class="skills__cat">
 					<h3 class="skills__cat-name">{cat.name}</h3>
@@ -146,9 +227,8 @@ const skillCategories = [
 		</Section>
 
 		<Section id="contact" heading="Contact">
-			<p>連絡先や各種リンクをここに置く。</p>
 			<p>
-				<a class="link" href="mailto:you@example.com">you@example.com</a>
+				<a class="link" href="mailto:you@example.com">hijoushoku88@gmail.com</a>
 			</p>
 		</Section>
 	</div>
@@ -156,7 +236,6 @@ const skillCategories = [
 	<Footer />
 </main>
 
-<!-- ▼ グローバルスタイル：CSS変数・背景画像・共通ユーティリティ -->
 <style is:global>
 	:root {
 		/* メインカラー＝グレー2トーン（純白/純黒を避ける） */
@@ -250,6 +329,90 @@ const skillCategories = [
 		gap: 1.2rem;
 	}
 
+	/* 所属・Activities：共通のリスト見た目（破線区切りのシンプルな一覧） */
+	.affiliation__list,
+	.activities__list {
+		display: grid;
+		gap: 1.2rem;
+	}
+	.affiliation__item,
+	.activities__item {
+		padding-bottom: 1.2rem;
+		border-bottom: 1px dashed var(--edge);
+	}
+	.affiliation__item:last-child,
+	.activities__item:last-child {
+		padding-bottom: 0;
+		border-bottom: none;
+	}
+	.affiliation__name,
+	.activities__title {
+		font-family: var(--font-pixel);
+		font-size: 1rem;
+		margin: 0 0 0.4rem;
+	}
+	.affiliation__meta,
+	.activities__meta {
+		font-family: var(--font-pixel);
+		font-size: 0.86rem;
+		opacity: 0.7;
+		margin: 0 0 0.5rem;
+	}
+	.affiliation__desc,
+	.activities__desc {
+		font-size: 0.9rem;
+		line-height: 1.7;
+		margin: 0;
+	}
+
+	/* レベルの目安（凡例）。SkillBlock のバーと同じ見た目で揃える。 */
+	.skills__legend {
+		padding: 0.9rem 1rem;
+		margin-bottom: 1.8rem;
+		font-family: var(--font-pixel);
+		color: var(--color);
+		background: var(--paper);
+		border: 1px dashed var(--color);
+		border-left: 4px solid var(--color);
+		box-shadow: var(--shadow-2);
+	}
+	.skills__legend-title {
+		font-size: 0.75rem;
+		letter-spacing: 0.08em;
+		margin: 0 0 0.7rem;
+	}
+	.skills__legend-list {
+		display: grid;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.skills__legend-item {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+	}
+	.skills__legend-bar {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 0.25rem;
+		width: 5rem;
+		flex-shrink: 0;
+	}
+	.skills__legend-bar i {
+		height: 0.55rem;
+		border: 1px solid var(--color);
+		background: transparent;
+	}
+	.skills__legend-bar i.on {
+		background: var(--color);
+	}
+	.skills__legend-desc {
+		font-size: 0.72rem;
+		line-height: 1.4;
+	}
+
 	.skills__cat {
 		margin-bottom: 1.8rem;
 	}
@@ -280,10 +443,10 @@ const skillCategories = [
 	const MAX = 0.97; // 最大の白さ（1で完全にグレー一色）
 
 	function update() {
-		const works = document.querySelector<HTMLElement>('#works');
-		if (!works) return;
-		// Works の開始位置までスクロールしたら MAX に到達させる
-		const target = works.offsetTop;
+		const about = document.querySelector<HTMLElement>('#about');
+		if (!about) return;
+		// About の開始位置までスクロールしたら MAX に到達させる
+		const target = about.offsetTop;
 		const p = target > 0 ? Math.min(window.scrollY / target, 1) : 1;
 		document.documentElement.style.setProperty('--veil', String(p * MAX));
 	}
