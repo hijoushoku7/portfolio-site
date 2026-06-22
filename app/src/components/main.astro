@@ -7,7 +7,7 @@ import Nav from './Nav.astro';
 import Hero from './Hero.astro';
 import Section from './Section.astro';
 import ProjectCard from './ProjectCard.astro';
-import SkillTag from './SkillTag.astro';
+import SkillBlock from './SkillBlock.astro';
 import Footer from './Footer.astro';
 
 const name = 'HIJOUSHOKU';
@@ -17,19 +17,30 @@ const projects = [
 	{
 		title: '自宅サーバー構築',
 		description: 'Proxmox VEを利用し、自宅に24時間起動するサーバーを構築',
-		tags: ['Docker','Ubuntu'],
-		overview: 'Proxmox VEを使ってUbuntuのゲームサーバーと複数のwebサービスをホストしています。webサーバーはcloudflare tunnelを利用してポート開放を行わず外部公開しており、リバースプロキシを使ってルーティングを行っています。またtailscaleを利用したVPNサーバーにより、安全なSSH接続で操作をしています。',
-		mechanism: 'どんな仕組みで動いているかをここに書く。',
-		images: ['home-server.png'] as string[], // 例: ['/works/alpha-1.png', '/works/alpha-2.png']
+		tags: ['Docker','Ubuntu','ShellScript','Traefik','Proxmox VE','Tailscale'],
+		overview: 'Proxmox VEを使って複数のゲームサーバーとWebサービス、開発環境を構築しています。',
+		mechanism: '・webサーバーはcloudflare tunnelを利用してポート開放を行わず外部公開しており、リバースプロキシを使ってルーティングを行っています。\n ・tailscaleを利用して外部ネットワークからSSH接続をしています \n ・',
+		images: ['/works/home-server.png'] as string[], // 例: ['/works/alpha-1.png', '/works/alpha-2.png']
 	},
 	{
-		title: 'Project Beta',
-		description: 'プロジェクトの概要をここに書く。担当範囲や工夫した点など。',
-		tags: ['React', 'CSS'],
-		overview: '何を作ったかをここに書く。',
-		mechanism: 'どんな仕組みで動いているかをここに書く。',
-		images: [] as string[],
+		title: 'Sharemon',
+		description: '自宅サーバーを利用した安全な身内向けのファイル共有サービス',
+		tags: ['React', 'Next.js','tus','postgreSQL','Auth.js','Prisma'],
+		overview: '身内向けで認証が必要なファイル共有サービス。自分のデバイス間共有や外部にアップロードしたくないファイルを簡単にWeb上にアップロードできます。',
+		mechanism: '自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。',
+		images: ['/works/image.png','/works/image1.png'] as string[],
 	},
+	{
+		title: 'Pull Request通知 & 要約Bot',
+		description: 'Github WebhooksでSlack上にPR通知＆要約、ランキングを生成するBOT',
+		tags: ['Javascript','Google App Script','Github Webhooks'],
+		overview: 'Github Webhooksを利用してPR通知を受け取り、通知、AI要約、ランキングを生成するBOTです。',
+		mechanism: '・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。\n ・PRをスムーズに行うため、[詳細を聞く]ボタンを押すとさらに詳細な問題点やチェックすべき点を洗い出し、要約してくれます。 \n ・週に一度、誰が一番マージやプルリクエストを送信したかをランキングとして表示する機能も搭載しています。',
+		images: ['/works/image2.png'] as string[],
+	},
+];
+
+/*
 	{
 		title: 'Project Gamma',
 		description: 'プロジェクトの概要をここに書く。リンク先で詳細を見せる想定。',
@@ -37,12 +48,53 @@ const projects = [
 		overview: '何を作ったかをここに書く。',
 		mechanism: 'どんな仕組みで動いているかをここに書く。',
 		images: [] as string[],
-	},
-];
+	}
+*/
 
-const skills = [
-	'HTML', 'CSS', 'JavaScript', 'TypeScript', 'React',
-	'Astro', 'Node.js', 'Git', 'Figma',
+// ▼ スキルはカテゴリ分け。各スキルに絵文字アイコンと習熟度(level 1〜5)を持たせる。
+const skillCategories = [
+	{
+		name: 'Frontend',
+		skills: [
+			{ label: 'HTML', icon: '🟧', level: 4 },
+			{ label: 'CSS', icon: '🎨', level: 4 },
+			{ label: 'JavaScript', icon: '🟨', level: 4 },
+			{ label: 'TypeScript', icon: '🔷', level: 4 },
+			{ label: 'React', icon: '⚛️', level: 3 },
+			{ label: 'Next.js', icon: '▲', level: 3 },
+			{ label: 'Astro', icon: '🚀', level: 3 },
+		],
+	},
+	{
+		name: 'Backend',
+		skills: [
+			{ label: 'Node.js', icon: '🟢', level: 3 },
+			{ label: 'PostgreSQL', icon: '🐘', level: 3 },
+			{ label: 'Prisma', icon: '🔺', level: 3 },
+			{ label: 'Auth.js', icon: '🔐', level: 3 },
+		],
+	},
+	{
+		name: 'DevOps',
+		skills: [
+			{ label: 'Docker', icon: '🐳', level: 4 },
+			{ label: 'Proxmox VE', icon: '🖥️', level: 3 },
+			{ label: 'Cloudflare', icon: '☁️', level: 3 },
+			{ label: 'Traefik', icon: '🚦', level: 3 },
+			{ label: 'Tailscale', icon: '🔗', level: 3 },
+			{ label: 'Linux', icon: '🐧', level: 3 },
+			{ label: 'Git', icon: '🔧', level: 4 },
+		],
+	},
+	{
+		name: 'Other',
+		skills: [
+			{ label: 'Figma', icon: '🖋️', level: 3 },
+			{ label: 'Security', icon: '🛡️', level: 3 },
+			{ label: 'Français', icon: '🇫🇷', level: 5 },
+			{ label: 'English', icon: '🇬🇧', level: 3 },
+		],
+	},
 ];
 ---
 
@@ -76,9 +128,21 @@ const skills = [
 		</Section>
 
 		<Section id="skills" heading="Skills">
-			<div class="skills__list">
-				{skills.map((s) => <SkillTag label={s} />)}
-			</div>
+			{skillCategories.map((cat) => (
+				<div class="skills__cat">
+					<h3 class="skills__cat-name">{cat.name}</h3>
+					<div class="skills__grid">
+						{cat.skills.map((s) => (
+							<SkillBlock
+								icon={s.icon}
+								label={s.label}
+								level={s.level}
+								variant="bar"
+							/>
+						))}
+					</div>
+				</div>
+			))}
 		</Section>
 
 		<Section id="contact" heading="Contact">
@@ -186,10 +250,27 @@ const skills = [
 		gap: 1.2rem;
 	}
 
-	.skills__list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.6rem;
+	.skills__cat {
+		margin-bottom: 1.8rem;
+	}
+	.skills__cat:last-child {
+		margin-bottom: 0;
+	}
+	.skills__cat-name {
+		font-family: var(--font-pixel);
+		font-size: 0.75rem;
+		letter-spacing: 0.08em;
+		color: var(--paper);
+		background: var(--color);
+		display: inline-block;
+		padding: 0.2rem 0.5rem;
+		margin: 0 0 0.8rem;
+	}
+
+	.skills__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+		gap: 0.7rem;
 	}
 </style>
 
