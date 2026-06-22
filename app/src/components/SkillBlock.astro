@@ -2,15 +2,14 @@
 // ▼ スキルブロック（レベルバー型）
 //   絵文字アイコン + ラベル + 習熟度(level 1〜5)のセグメントバー。
 //   既存のグレー2トーン / 破線枠 / 二重シャドウ / ピクセルフォントに沿う。
+//   バーの描画は LevelBar に集約（Skills 凡例と共用）。
+import LevelBar from './LevelBar.astro';
 interface Props {
 	icon: string;
 	label: string;
 	level?: number; // 1〜5
 }
 const { icon, label, level = 3 } = Astro.props;
-const max = 5;
-const lv = Math.max(1, Math.min(max, level));
-const cells = Array.from({ length: max }, (_, i) => i < lv);
 ---
 
 <div class="sb">
@@ -18,9 +17,7 @@ const cells = Array.from({ length: max }, (_, i) => i < lv);
 		<span class="sb__icon" aria-hidden="true">{icon}</span>
 		<span class="sb__label">{label}</span>
 	</span>
-	<span class="sb__track" aria-label={`Lv${lv}`}>
-		{cells.map((on) => <i class={on ? 'on' : ''}></i>)}
-	</span>
+	<LevelBar level={level} />
 </div>
 
 <style>
@@ -53,19 +50,5 @@ const cells = Array.from({ length: max }, (_, i) => i < lv);
 	.sb__label {
 		font-size: 0.72rem;
 		letter-spacing: 0.02em;
-	}
-
-	.sb__track {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		gap: 0.25rem;
-	}
-	.sb__track i {
-		height: 0.55rem;
-		border: 1px solid var(--color);
-		background: transparent;
-	}
-	.sb__track i.on {
-		background: var(--color);
 	}
 </style>

@@ -1,0 +1,31 @@
+---
+// ▼ 習熟度バー（5セグメント）。SkillBlock と Skills 凡例で共用する。
+//   level 分だけ塗りつぶし、グレー2トーンの枠で残りを表示する。
+interface Props {
+	level?: number; // 1〜5
+}
+const { level = 3 } = Astro.props;
+const max = 5;
+const lv = Math.max(1, Math.min(max, level));
+const cells = Array.from({ length: max }, (_, i) => i < lv);
+---
+
+<span class="level-bar" aria-label={`Lv${lv}`}>
+	{cells.map((on) => <i class={on ? 'on' : ''}></i>)}
+</span>
+
+<style>
+	.level-bar {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 0.25rem;
+	}
+	.level-bar i {
+		height: 0.55rem;
+		border: 1px solid var(--color);
+		background: transparent;
+	}
+	.level-bar i.on {
+		background: var(--color);
+	}
+</style>
