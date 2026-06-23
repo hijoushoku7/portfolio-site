@@ -1,15 +1,12 @@
 ---
-// ▼ スキルブロック（レベルバー型）
-//   絵文字アイコン + ラベル + 習熟度(level 1〜5)のセグメントバー。
+// ▼ スキルブロック（技術名のみ）
+//   絵文字アイコン + ラベル。
 //   既存のグレー2トーン / 破線枠 / 二重シャドウ / ピクセルフォントに沿う。
-//   バーの描画は LevelBar に集約（Skills 凡例と共用）。
-import LevelBar from './LevelBar.astro';
 interface Props {
 	icon: string;
 	label: string;
-	level?: number; // 1〜5
 }
-const { icon, label, level = 3 } = Astro.props;
+const { icon, label } = Astro.props;
 ---
 
 <div class="sb">
@@ -17,7 +14,6 @@ const { icon, label, level = 3 } = Astro.props;
 		<span class="sb__icon" aria-hidden="true">{icon}</span>
 		<span class="sb__label">{label}</span>
 	</span>
-	<LevelBar level={level} />
 </div>
 
 <style>
