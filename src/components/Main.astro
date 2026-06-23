@@ -19,7 +19,7 @@ const projects = [
 		description: 'Proxmox VEを利用し、自宅に24時間起動するサーバーを構築',
 		tags: ['Docker','Ubuntu','ShellScript','Traefik','Proxmox VE','Tailscale'],
 		overview: 'Proxmox VEを使って複数のゲームサーバーとWebサービス、開発環境を構築しています。',
-		mechanism: '・webサーバーはcloudflare tunnelを利用してポート開放を行わず外部公開しており、リバースプロキシを使ってルーティングを行っています。\n ・tailscaleを利用して外部ネットワークからSSH接続をしています \n ・',
+		mechanism: '・webサーバーはcloudflare tunnelを利用してポート開放を行わず外部公開しており、リバースプロキシを使ってルーティングを行っています。\n ・tailscaleを利用して外部ネットワークからSSH接続をしています \n ',
 		images: ['/works/home-server.png'] as string[], // 例: ['/works/alpha-1.png', '/works/alpha-2.png']
 	},
 	{
@@ -27,7 +27,7 @@ const projects = [
 		description: '自宅サーバーを利用した安全な身内向けのファイル共有サービス',
 		tags: ['React', 'Next.js','tus','postgreSQL','Auth.js','Prisma'],
 		overview: '身内向けで認証が必要なファイル共有サービス。自分のデバイス間共有や外部にアップロードしたくないファイルを簡単にWeb上にアップロードできます。',
-		mechanism: '自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。',
+		mechanism: '・自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。\n ・念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。',
 		images: ['/works/image.png','/works/image1.png'] as string[],
 	},
 	{
@@ -45,6 +45,14 @@ const projects = [
 		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。',
 		mechanism: '\n ・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。 \n ・実際にwebアプリをデプロイするOSとは独立させているので、環境変数が盗まれることを防いでいます。',
 		images: ['/works/tmux.png','/works/tmux1.png'] as string[],
+	},
+	{
+		title: 'このポートフォリオサイト',
+		description: 'Astro + Reactで制作した自己紹介・制作物紹介のポートフォリオサイト',
+		tags: ['Astro','React','TypeScript'],
+		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。今ご覧いただいているこのサイト自体がその制作物です。',
+		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、ファイルベースルーティングでページを構成しています。\n ・TypeScriptで型安全に開発しています。',
+		images: ['/works/portfolio1.png'] as string[],
 	},
 ];
 
@@ -145,7 +153,7 @@ const skillCategories = [
 		<Section id="about" heading="About">
 			<p>
 				こんにちは。非常食と呼ばれている大学生です。本名は怖いので書きません。技術が大好きで、未熟者ですがサーバーやWEB周りの技術を中心に学んでいます。
-				趣味は自作キーボード、ゲーム、古着などです。上は初めて作成したキーボードです。
+				趣味は自作キーボード、ゲーム、古着などです。上は初めて作成したキーボードです。ついでに小さい頃にフランスに住んでいたため、フランス語が話せます。英語はまあまあです。
 			</p>
 		</Section>
 

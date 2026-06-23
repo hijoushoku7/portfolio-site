@@ -13,8 +13,8 @@ const links = [
 ];
 
 const socials = [
-	{ label: 'GitHub', href: '#' },
-	{ label: 'Mail', href: '#' },
+	{ label: 'GitHub', href: 'https://github.com/hijoushoku7', external: true },
+	{ label: 'Mail', href: 'mailto:hijoushoku88@gmail.com', external: false },
 ];
 ---
 
@@ -27,7 +27,12 @@ const socials = [
 	</label>
 	<div class="nav__socials">
 		{socials.map((s) => (
-			<a class="btn" href={s.href}>{s.label}</a>
+			<a
+				class="btn"
+				href={s.href}
+				target={s.external ? '_blank' : undefined}
+				rel={s.external ? 'noopener noreferrer' : undefined}
+			>{s.label}</a>
 		))}
 	</div>
 
