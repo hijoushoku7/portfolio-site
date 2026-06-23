@@ -14,28 +14,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 技術スタック
 
-- [Astro](https://docs.astro.build) (v6) — 静的サイトフレームワーク。ページは `app/src/pages/` に配置
+- [Astro](https://docs.astro.build) (v7) — 静的サイトフレームワーク。ページは `src/pages/` に配置
 - React (v19) — `@astrojs/react` 経由。Astroのアイランドアーキテクチャでインタラクティブなコンポーネントに使用
-- TypeScript — `app/tsconfig.json` は `astro/tsconfigs/strict` を継承
+- TypeScript — `tsconfig.json` は `astro/tsconfigs/strict` を継承
+- Node.js — `>=22.12.0`
 
 ## コマンド
 
-すべて `app/` ディレクトリ内で実行:
+すべてプロジェクトルートで実行:
 
 | コマンド             | 内容                                      |
 | -------------------- | ----------------------------------------- |
 | `npm install`         | 依存関係のインストール                    |
 | `npm run dev`          | ローカル開発サーバーを起動 (`localhost:4321`) |
-| `npm run build`        | 本番用ビルドを `app/dist/` に出力          |
+| `npm run build`        | 本番用ビルドを `dist/` に出力              |
 | `npm run preview`      | 本番ビルドをローカルでプレビュー           |
 | `npm run astro ...`    | Astro CLIコマンドを実行 (例: `astro check`) |
 
 ## 構成
 
-- `app/src/pages/` — ファイルベースルーティング。`.astro` ファイル1つがルート1つに対応
-- `app/src/layouts/` — 共通レイアウト(例: `Layout.astro` が `<head>`/`<body>` の共通部分をラップ)
-- `app/src/components/` — `.astro` および Reactコンポーネント
-- `app/src/assets/` — Astroのアセットパイプラインで処理される画像・SVG
-- `app/public/` — そのまま配信される静的ファイル(favicon等)
+- `src/pages/` — ファイルベースルーティング。`.astro` ファイル1つがルート1つに対応(現状は `index.astro` のみ)
+- `src/layouts/` — 共通レイアウト(`Layout.astro` が `<head>`/`<body>` の共通部分をラップ)
+- `src/components/` — `.astro` および Reactコンポーネント。`Main.astro` がページ全体の骨格と掲載データ(プロジェクト・所属・活動・スキル)を保持し、`Nav.astro` がナビゲーションとソーシャルリンク(`socials` 配列)を管理
+- `src/assets/` — Astroのアセットパイプラインで処理される画像・SVG
+- `public/` — そのまま配信される静的ファイル(favicon、背景画像、`works/` 配下の制作物スクリーンショット等)
 
-現状はAstroのスターターテンプレートのまま(`Welcome.astro`、スターターの `index.astro` 等)で、実際のポートフォリオ内容はまだ実装されていない。
+## Git運用
+
+**`git push` する際は、コミットした後にプルリクエストを送る方針とする。** 直接デフォルトブランチへ push せず、作業用ブランチでコミット → push → プルリクエストを作成する流れで進める。
