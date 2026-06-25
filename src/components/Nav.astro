@@ -48,6 +48,18 @@ const socials = [
 	</ul>
 </nav>
 
+<script>
+	const toggle = document.querySelector<HTMLInputElement>('#nav-toggle');
+	const linkList = document.querySelector('.overlay__list');
+
+	linkList?.addEventListener('click', (event) => {
+		if (!(event.target instanceof Element)) return;
+		if (!event.target.closest('a')) return;
+
+		if (toggle) toggle.checked = false;
+	});
+</script>
+
 <style>
 	.nav {
 		position: fixed;
