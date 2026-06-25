@@ -8,6 +8,7 @@ import Hero from './Hero.astro';
 import Section from './Section.astro';
 import ProjectCard from './ProjectCard.astro';
 import SkillBlock from './SkillBlock.astro';
+import QualificationItem from './QualificationItem.astro';
 import Footer from './Footer.astro';
 
 const name = 'HIJO';
@@ -43,14 +44,14 @@ const projects = [
 		description: '自宅サーバーにtailscale+terminusを利用して接続できる開発環境',
 		tags: ['Terminus','tmux','ubuntu','tailscale','git','claude code','codex'],
 		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。',
-		mechanism: '\n ・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。 \n ・実際にwebアプリをデプロイするOSとは独立させているので、環境変数が盗まれることを防いでいます。',
+		mechanism: '\n ・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。 \n ・実際にwebアプリをデプロイするコンテナとは独立させているので、環境変数が盗まれることを防いでいます。',
 		images: ['/works/tmux.png','/works/tmux1.png'] as string[],
 	},
 	{
-		title: 'このポートフォリオサイト',
+		title: 'ポートフォリオサイト',
 		description: 'Astro + Reactで制作した自己紹介・制作物紹介のポートフォリオサイト',
 		tags: ['Astro','React','TypeScript'],
-		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。今ご覧いただいているこのサイト自体がその制作物です。',
+		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。デザインはできるだけシンプルで伝わりやすくしており、白が好きなのでモノクロで統一しています。',
 		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、ファイルベースルーティングでページを構成しています。\n ・TypeScriptで型安全に開発しています。',
 		images: ['/works/portfolio1.png'] as string[],
 	},
@@ -91,6 +92,22 @@ const activities = [
 		result: '優勝',
 		description: 'PR要約BOTと大学のシングルサインオンの認証簡略化chrome拡張機能',
 	}
+];
+
+// ▼ 資格。取得した資格を追加すると Qualifications セクションに表示される。
+const qualifications: Array<{
+	name: string;
+	acquiredAt?: string;
+	issuer?: string;
+}> = [
+	 {
+	 	name: 'TOEIC 840点',
+	 	acquiredAt: '2025.7 取得',
+	 },
+	 {
+		name: 'DELF B1 仏語資格',
+		acquiredAt: '2023.10 取得',
+	 },
 ];
 
 // ▼ スキルはカテゴリ分け。各スキルに絵文字アイコンと技術名を持たせる。
@@ -195,6 +212,22 @@ const skillCategories = [
 					</div>
 				))}
 			</div>
+		</Section>
+
+		<Section id="qualifications" heading="Qualifications">
+			{qualifications.length > 0 ? (
+				<div class="qualifications__list">
+					{qualifications.map((qualification) => (
+						<QualificationItem
+							name={qualification.name}
+							acquiredAt={qualification.acquiredAt}
+							issuer={qualification.issuer}
+						/>
+					))}
+				</div>
+			) : (
+				<p class="qualifications__empty">資格情報は準備中です。</p>
+			)}
 		</Section>
 
 		<Section id="skills" heading="Skills">
@@ -318,7 +351,8 @@ const skillCategories = [
 
 	/* 所属・Activities：共通のリスト見た目（破線区切りのシンプルな一覧） */
 	.affiliation__list,
-	.activities__list {
+	.activities__list,
+	.qualifications__list {
 		display: grid;
 		gap: 1.2rem;
 	}
@@ -349,6 +383,11 @@ const skillCategories = [
 	.activities__desc {
 		font-size: 0.9rem;
 		line-height: 1.7;
+		margin: 0;
+	}
+
+	.qualifications__empty {
+		font-size: 0.9rem;
 		margin: 0;
 	}
 
