@@ -1,0 +1,42 @@
+---
+// ▼ 資格一覧の各項目
+//   資格名・取得日・発行元を受け取り、既存の Activities と同系統で表示する。
+interface Props {
+	name: string;
+	acquiredAt?: string;
+	issuer?: string;
+}
+
+const { name, acquiredAt, issuer } = Astro.props;
+const meta = [acquiredAt, issuer].filter(Boolean).join('・');
+---
+
+<article class="qualification">
+	<h3 class="qualification__name">{name}</h3>
+	{meta && <p class="qualification__meta">{meta}</p>}
+</article>
+
+<style>
+	.qualification {
+		padding-bottom: 1.2rem;
+		border-bottom: 1px dashed var(--edge);
+	}
+
+	.qualification:last-child {
+		padding-bottom: 0;
+		border-bottom: none;
+	}
+
+	.qualification__name {
+		font-family: var(--font-pixel);
+		font-size: 1rem;
+		margin: 0 0 0.4rem;
+	}
+
+	.qualification__meta {
+		font-family: var(--font-pixel);
+		font-size: 0.86rem;
+		opacity: 0.7;
+		margin: 0;
+	}
+</style>
