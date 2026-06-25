@@ -43,8 +43,8 @@ const projects = [
 		title: '自宅サーバー+tmuxで外からでもAI開発',
 		description: '自宅サーバーにtailscale+terminusを利用して接続できる開発環境',
 		tags: ['Terminus','tmux','ubuntu','tailscale','git','claude code','codex'],
-		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。',
-		mechanism: '\n ・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。 \n ・実際にwebアプリをデプロイするコンテナとは独立させているので、環境変数が盗まれることを防いでいます。',
+		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。 ',
+		mechanism: '\n ・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。 \n ・実際にwebアプリをデプロイするコンテナとは独立させているので、環境変数が盗まれることを防いでいます。\n ・また、接続できるデバイスはtailscaleネットワークに接続しているもののみに限定しているため安全に通信ができます。',
 		images: ['/works/tmux.png','/works/tmux1.png'] as string[],
 	},
 	{
@@ -69,7 +69,12 @@ const projects = [
 */
 
 // ▼ 所属（学科・研究室・プロジェクトなど）。内容は後で差し替える想定のテンプレート。
-const affiliations = [
+const affiliations :Array<{
+	name:string;
+	role:string;
+	period:string;
+	description:string;
+}>= [
 	{
 		name: '同志社大学情報システムデザイン学科',
 		role: '学部2回生',
@@ -80,7 +85,7 @@ const affiliations = [
 		name: 'ローム記念館プロジェクト Campus Crew',
 		role: 'メンバー',
 		period: '2026.04~',
-		description: 'AIを用いたSNS開発や、マネジメントを中心に、企業を目指して活動しています。',
+		description: 'AIを用いたSNS開発や、マネジメントを中心に事業展開を目指して活動しています。',
 	},
 ];
 
