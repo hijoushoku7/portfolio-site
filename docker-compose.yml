@@ -1,0 +1,20 @@
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-site
+    restart: unless-stopped
+    networks:
+      - cloudflared_tunnel_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=cloudflared_tunnel_net"
+      - "traefik.http.routers.portfolio.rule=Host(`hijoushoku.com`)"
+      - "traefik.http.routers.portfolio.entrypoints=web"
+      - "traefik.http.services.portfolio.loadbalancer.server.port=80"
+
+networks:
+  cloudflared_tunnel_net:
+    external: true
+    name: cloudflared_tunnel_net
