@@ -13,6 +13,7 @@ import Footer from './Footer.astro';
 
 const name = 'HIJO';
 const title = 'My Name is...';
+const affiliation = '情報学/CS専攻';
 
 const projects = [
 	{
@@ -177,13 +178,13 @@ const skillCategories = [
 <Nav />
 
 <main>
-	<Hero name={name} title={title} />
+	<Hero name={name} title={title} affiliation={affiliation}/>
 
 	<div class="content">
 		<Section id="about" heading="About">
 			<p>
-				こんにちは。非常食と呼ばれている大学生です。本名は怖いので書きません。技術が大好きで、未熟者ですがサーバーやWEB周りの技術を中心に学んでいます。
-				趣味は自作キーボード、ゲーム、古着などです。上は初めて作成したキーボードです。ついでに小さい頃にフランスに住んでいたため、フランス語が話せます。英語はまあまあです。
+				こんにちは。非常食がニックネームの大学生です。本名は怖いので書きません。技術が大好きで、大学でのコンピューターサイエンス学習に加えてサーバーやWEB周りの技術を中心に学んでいます。
+				趣味は自作キーボード、ゲーム、古着などです。上は初めて作成したキーボードです。ついでに小さい頃にフランスに住んでいたため、フランス語が話せます。英語もスピーキングは得意です。
 			</p>
 		</Section>
 
@@ -428,8 +429,6 @@ const skillCategories = [
 	}
 </style>
 
-<!-- ▼ ベール（背景の白み）をスクロール量から制御。
-     Works セクションに到達した時点で opacity が最大（ほぼグレー一色）になる。 -->
 <script>
 	const MAX = 0.97; // 最大の白さ（1で完全にグレー一色）
 
@@ -437,7 +436,7 @@ const skillCategories = [
 		const about = document.querySelector<HTMLElement>('#about');
 		if (!about) return;
 		// About の開始位置までスクロールしたら MAX に到達させる
-		const target = about.offsetTop;
+		const target = about.offsetTop -300;
 		const p = target > 0 ? Math.min(window.scrollY / target, 1) : 1;
 		document.documentElement.style.setProperty('--veil', String(p * MAX));
 	}

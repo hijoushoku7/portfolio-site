@@ -93,10 +93,15 @@ const {
 		display: block;
 	}
 
+	.card__body {
+		min-width: 0;
+	}
+
 	.card__title {
 		font-family: var(--font-pixel);
 		font-size: 0.95rem;
 		margin: 0 0 0.5rem;
+		overflow-wrap: break-word;
 	}
 
 	.card__desc {
@@ -104,6 +109,7 @@ const {
 		font-size: 0.9rem;
 		line-height: 1.7;
 		margin: 0 0 0.7rem;
+		overflow-wrap: break-word;
 	}
 
 	.card__tags {
@@ -119,6 +125,8 @@ const {
 		font-size: 0.6rem;
 		padding: 0.25rem 0.4rem;
 		border: 1px dashed var(--color);
+		overflow-wrap: break-word;
+		word-break: break-all;
 	}
 
 	@media (max-width: 480px) {

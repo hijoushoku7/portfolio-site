@@ -1,12 +1,12 @@
 ---
-const { name = 'HIJOUSHOKU', title = 'PORTFOLIO', Affiliation = '情報系専攻'} = Astro.props;
+const { name = 'HIJOUSHOKU', title = 'PORTFOLIO', affiliation = '情報系専攻'} = Astro.props;
 ---
 
 <section class="hero">
 	<div class="hero__inner">
 		<p class="hero__tag">{title}</p>
 		<h1 class="label hero__name">{name}</h1>
-		<p class="hero__sub">Information Science Faculty Student</p>
+		<p class="hero__sub">{affiliation}</p>
 	</div>
 	<div class="hero__scroll">scroll ↓</div>
 </section>
@@ -35,6 +35,10 @@ const { name = 'HIJOUSHOKU', title = 'PORTFOLIO', Affiliation = '情報系専攻
 		letter-spacing: 0.3em;
 		color: var(--color);
 		margin: 0;
+		background: rgba(230, 230, 230, 0.35);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		padding: 0.4rem 0.8rem;
 	}
 
 	.hero__name {
