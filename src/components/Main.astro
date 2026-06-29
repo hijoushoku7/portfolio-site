@@ -27,9 +27,9 @@ const projects = [
 	{
 		title: 'ポートフォリオサイト',
 		description: 'Astro + Reactで制作した自己紹介・制作物紹介のポートフォリオサイト',
-		tags: ['Astro','React','TypeScript'],
+		tags: ['Astro','React','TypeScript', 'Github Actions'],
 		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。デザインはできるだけシンプルで伝わりやすくしており、白が好きなのでモノクロで統一しています。',
-		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、ファイルベースルーティングでページを構成しています。\n ・Github Actionsを利用し、CI(型チェック)、CDを実装しています。CDはtailscale OAuthを利用して自宅サーバーにSSH接続してdockerコンテナを更新しています。\n ・TypeScriptで型安全に開発しています。',
+		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、静的HTMLとしてページを構成しています。\n ・Github Actionsを利用し、CI(型チェック)、CDを実装しています。CDはtailscale OAuthを利用して自宅サーバーにSSH接続してdockerコンテナを更新しています。\n ・TypeScriptで型安全に開発しています。',
 		images: ['/works/portfolio1.png'] as string[],
 	},
 	{
@@ -37,15 +37,15 @@ const projects = [
 		description: '自宅サーバーを利用した安全な身内向けのファイル共有サービス',
 		tags: ['React', 'Next.js','tus','postgreSQL','Auth.js','Prisma'],
 		overview: '身内向けで認証が必要なファイル共有サービス。自分のデバイス間共有や外部にアップロードしたくないファイルを簡単にWeb上にアップロードできます。',
-		mechanism: '・自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。\n ・念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。',
+		mechanism: '・自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。\n ・念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。 \n ・ファイルを共有後はログイン可能なユーザーのみがダウンロード可能なリンクを共有できます。 \n ・認証はAuth.js/jwtでステートレスに行っています。',
 		images: ['/works/image.png','/works/image1.png'] as string[],
 	},
 	{
 		title: 'Pull Request通知 & 要約Bot',
 		description: 'Github WebhooksでSlack上にPR通知＆要約、ランキングを生成するBOT',
 		tags: ['Javascript','Google App Script','Github Webhooks'],
-		overview: 'Github Webhooksを利用してPR通知を受け取り、通知、AI要約、ランキングを生成するBOTです。',
-		mechanism: '・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。\n ・PRをスムーズに行うため、[詳細を聞く]ボタンを押すとさらに詳細な問題点やチェックすべき点を洗い出し、要約してくれます。 \n ・週に一度、誰が一番マージやプルリクエストを送信したかをランキングとして表示する機能も搭載しています。',
+		overview: 'Github Webhooksを利用してPR通知を受け取り、通知、AI要約、ランキングを生成するBOTです。\n ・PRをスムーズに行うため、[詳細を聞く]ボタンを押すとさらに詳細な問題点やチェックすべき点を洗い出し、要約してくれます。 \n ・週に一度、誰が一番マージやプルリクエストを送信したかをランキングとして表示する機能も搭載しています。',
+		mechanism: '・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。 \n ・google spreadsheetをデータベースとしてPRやマージを保存し、集計してランキングを生成します。',
 		images: ['/works/image2.png'] as string[],
 	},
 	{
@@ -61,7 +61,7 @@ const projects = [
 		description: 'Minecraftのサーバーの新規構築、管理、運用を簡単にするWebアプリ',
 		tags: ['Next.js','Docker','WebSocket','Hono'],
 		overview: '・Ubuntu server上でMinecraftサーバーの新規構築、管理、運用をローカルで公開するWebアプリ上で一元管理できます。  ',
-		mechanism: '・itzg/minecraftServer　Dockerイメージを利用し、APIサーバーからDocker Engine APIを叩くことでコンテナの生成、停止、起動などを行います。 \n WebSocketを利用してリアルタイムでコンソールを表示させることができます。 /n ・既存機能のRCONを利用してコマンドを送信できます。',
+		mechanism: '・itzg/minecraftServer Dockerイメージを利用し、APIサーバーからDocker Engine APIを叩くことでコンテナの生成、停止、起動などを行います。 \n ・WebSocketを利用してリアルタイムでコンソールを表示させることができます。 \n ・既存機能のRCONを利用してコマンドを送信できます。',
 		images: ['/works/mc2.png','/works/mc1.png'] as string[],
 	},
 ];
@@ -94,7 +94,7 @@ const affiliations :Array<{
 		name: 'ローム記念館プロジェクト Campus Crew',
 		role: 'メンバー',
 		period: '2026.04~',
-		description: 'AIを用いたSNS開発や、マネジメントを中心に企業を目指して活動しています。',
+		description: 'AIを用いたSNS開発や、マネジメントを中心に起業を目指して活動しています。',
 	},
 ];
 
@@ -115,16 +115,19 @@ const qualifications: Array<{
 	issuer?: string;
 }> = [
 	 {
-	 	name: 'TOEIC 840点',
+	 	name: 'TOEIC IP 840点',
 	 	acquiredAt: '2025.7 取得',
 	 },
 	 {
-		name: 'DELF B1 仏語資格',
+	 	name: 'TOEFL ITP 510点',
+	 	acquiredAt: '2024.10 取得',
+	 },
+	 {
+		name: 'DELF B1 フランス語資格',
 		acquiredAt: '2023.10 取得',
 	 },
 ];
 
-// ▼ スキルはカテゴリ分け。各スキルに絵文字アイコンと技術名を持たせる。
 const skillCategories = [
 	{
 		name: 'Frontend',
@@ -171,6 +174,7 @@ const skillCategories = [
 			{ label: 'Astro', icon: '🚀' },
 			{ label: 'PostgreSQL', icon: '🐘' },
 			{ label: 'Prisma', icon: '🔺' },
+			{ label: 'Go', icon: 'Go' },
 		],
 	},
 ];
