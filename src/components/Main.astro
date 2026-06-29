@@ -25,6 +25,14 @@ const projects = [
 		images: ['/works/home-server.png'] as string[], // 例: ['/works/alpha-1.png', '/works/alpha-2.png']
 	},
 	{
+		title: 'ポートフォリオサイト',
+		description: 'Astro + Reactで制作した自己紹介・制作物紹介のポートフォリオサイト',
+		tags: ['Astro','React','TypeScript'],
+		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。デザインはできるだけシンプルで伝わりやすくしており、白が好きなのでモノクロで統一しています。',
+		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、ファイルベースルーティングでページを構成しています。\n ・Github Actionsを利用し、CI(型チェック)、CDを実装しています。CDはtailscale OAuthを利用して自宅サーバーにSSH接続してdockerコンテナを更新しています。\n ・TypeScriptで型安全に開発しています。',
+		images: ['/works/portfolio1.png'] as string[],
+	},
+	{
 		title: 'チーム内&デバイス間簡易ファイル共有',
 		description: '自宅サーバーを利用した安全な身内向けのファイル共有サービス',
 		tags: ['React', 'Next.js','tus','postgreSQL','Auth.js','Prisma'],
@@ -49,15 +57,7 @@ const projects = [
 		images: ['/works/tmux.png','/works/tmux1.png'] as string[],
 	},
 	{
-		title: 'ポートフォリオサイト',
-		description: 'Astro + Reactで制作した自己紹介・制作物紹介のポートフォリオサイト',
-		tags: ['Astro','React','TypeScript'],
-		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。デザインはできるだけシンプルで伝わりやすくしており、白が好きなのでモノクロで統一しています。',
-		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、ファイルベースルーティングでページを構成しています。\n ・TypeScriptで型安全に開発しています。',
-		images: ['/works/portfolio1.png'] as string[],
-	},
-	{
-		title: 'Minecraftサーバー管理サーバー',
+		title: 'Minecraftサーバー管理アプリ',
 		description: 'Minecraftのサーバーの新規構築、管理、運用を簡単にするWebアプリ',
 		tags: ['Next.js','Docker','WebSocket','Hono'],
 		overview: '・Ubuntu server上でMinecraftサーバーの新規構築、管理、運用をローカルで公開するWebアプリ上で一元管理できます。  ',
@@ -104,7 +104,7 @@ const activities = [
 		title: 'Campus Crew ハッカソン',
 		date: '2026.6.22',
 		result: '優勝',
-		description: 'PR要約BOTと大学のシングルサインオンの認証簡略化chrome拡張機能',
+		description: 'PR要約BOTと大学のシングルサインオンの認証簡略化chrome拡張機能を作成',
 	}
 ];
 
