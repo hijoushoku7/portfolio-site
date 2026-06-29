@@ -37,15 +37,15 @@ const projects = [
 		description: '自宅サーバーを利用した安全な身内向けのファイル共有サービス',
 		tags: ['React', 'Next.js','tus','postgreSQL','Auth.js','Prisma'],
 		overview: '身内向けで認証が必要なファイル共有サービス。自分のデバイス間共有や外部にアップロードしたくないファイルを簡単にWeb上にアップロードできます。',
-		mechanism: '・自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。\n ・念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。',
+		mechanism: '・自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。\n ・念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。 \n ・ファイルを共有後はログイン可能なユーザーのみがダウンロード可能なリンクを共有できます。 \n ・認証はAuth.js/jwtでステートレスに行っています。',
 		images: ['/works/image.png','/works/image1.png'] as string[],
 	},
 	{
 		title: 'Pull Request通知 & 要約Bot',
 		description: 'Github WebhooksでSlack上にPR通知＆要約、ランキングを生成するBOT',
 		tags: ['Javascript','Google App Script','Github Webhooks'],
-		overview: 'Github Webhooksを利用してPR通知を受け取り、通知、AI要約、ランキングを生成するBOTです。',
-		mechanism: '・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。\n ・PRをスムーズに行うため、[詳細を聞く]ボタンを押すとさらに詳細な問題点やチェックすべき点を洗い出し、要約してくれます。 \n ・週に一度、誰が一番マージやプルリクエストを送信したかをランキングとして表示する機能も搭載しています。',
+		overview: 'Github Webhooksを利用してPR通知を受け取り、通知、AI要約、ランキングを生成するBOTです。\n ・PRをスムーズに行うため、[詳細を聞く]ボタンを押すとさらに詳細な問題点やチェックすべき点を洗い出し、要約してくれます。 \n ・週に一度、誰が一番マージやプルリクエストを送信したかをランキングとして表示する機能も搭載しています。',
+		mechanism: '・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。 \n ・google spreadsheetをデータベースとしてPRやマージを保存し、集計してランキングを生成します。',
 		images: ['/works/image2.png'] as string[],
 	},
 	{
