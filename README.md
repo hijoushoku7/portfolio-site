@@ -1,6 +1,6 @@
 # portfolio-site
 
-エンジニア個人のポートフォリオサイト。自己紹介・制作物（Works）・所属（Affiliation）・活動（Activities）・技術スタック（Skills）を 1 ページにまとめた静的サイトです。
+非常食のポートフォリオサイトです。静的なhtmlをastroで生成してnginxでデプロイしています。
 
 ## 技術スタック
 
