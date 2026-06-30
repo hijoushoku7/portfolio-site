@@ -10,6 +10,7 @@ import ProjectCard from './ProjectCard.astro';
 import SkillBlock from './SkillBlock.astro';
 import QualificationItem from './QualificationItem.astro';
 import Footer from './Footer.astro';
+import CopyToast from './CopyToast.astro';
 
 const name = 'HIJO';
 const title = 'My Name is...';
@@ -93,9 +94,15 @@ const affiliations :Array<{
 	{
 		name: 'ローム記念館プロジェクト Campus Crew',
 		role: 'メンバー',
-		period: '2026.04~',
+		period: '2026.04 - 現在',
 		description: 'AIを用いたSNS開発や、マネジメントを中心に起業を目指して活動しています。',
 	},
+	{
+		name: 'プログラミング教室　講師',
+		role: '講師',
+		period: '2025.05 - 現在',
+		description : 'UnityやMinecraftのメイクコードを利用したプログラミングを生徒にメンターとして教えています。',
+	}
 ];
 
 // ▼ Activities（ハッカソン・大会など）。内容は後で差し替える想定のテンプレート。
@@ -193,7 +200,7 @@ const skillCategories = [
 			</p>
 		</Section>
 
-		<Section id="affiliation" heading="Affiliation">
+		<Section id="affiliation" heading="Affiliation/所属">
 			<div class="affiliation__list">
 				{affiliations.map((a) => (
 					<div class="affiliation__item">
@@ -205,7 +212,7 @@ const skillCategories = [
 			</div>
 		</Section>
 
-		<Section id="works" heading="Works">
+		<Section id="works" heading="Works/制作物">
 			<div class="works__grid">
 				{projects.map((p, i) => (
 					<ProjectCard
@@ -221,7 +228,7 @@ const skillCategories = [
 			</div>
 		</Section>
 
-		<Section id="activities" heading="Activities">
+		<Section id="activities" heading="Activities/活動">
 			<div class="activities__list">
 				{activities.map((a) => (
 					<div class="activities__item">
@@ -233,7 +240,7 @@ const skillCategories = [
 			</div>
 		</Section>
 
-		<Section id="qualifications" heading="Qualifications">
+		<Section id="qualifications" heading="Qualifications/資格">
 			{qualifications.length > 0 ? (
 				<div class="qualifications__list">
 					{qualifications.map((qualification) => (
@@ -249,7 +256,7 @@ const skillCategories = [
 			)}
 		</Section>
 
-		<Section id="skills" heading="Skills">
+		<Section id="skills" heading="Skills/スキル">
 			{skillCategories.map((cat) => (
 				<div class="skills__cat">
 					<h3 class="skills__cat-name">{cat.name}</h3>
@@ -265,15 +272,17 @@ const skillCategories = [
 			))}
 		</Section>
 
-		<Section id="contact" heading="Contact">
+		<Section id="contact" heading="Contact/連絡先">
 			<p>
-				<a class="link" href="mailto:hijoushoku88@gmail.com">hijoushoku88@gmail.com</a>
+				<button class="link mail-copy-btn" data-email="hijoushoku88@gmail.com">hijoushoku88@gmail.com</button>
 			</p>
 		</Section>
 	</div>
 
 	<Footer />
 </main>
+
+<CopyToast />
 
 <style is:global>
 	:root {
@@ -338,6 +347,10 @@ const skillCategories = [
 	}
 
 	/* 本文リンクのホバー（持ち上がる挙動） */
+	button.link {
+		border: none;
+		cursor: pointer;
+	}
 	.link {
 		font-family: var(--font-body);
 		color: var(--color);
@@ -435,6 +448,15 @@ const skillCategories = [
 </style>
 
 <script>
+	document.querySelectorAll<HTMLButtonElement>('.mail-copy-btn').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const email = btn.dataset.email ?? '';
+			navigator.clipboard.writeText(email).then(() => {
+				window.dispatchEvent(new CustomEvent('copy-toast'));
+			});
+		});
+	});
+
 	const MAX = 0.97; // 最大の白さ（1で完全にグレー一色）
 
 	function update() {
