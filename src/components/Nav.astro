@@ -15,8 +15,9 @@ const links = [
 
 const socials = [
 	{ label: 'GitHub', href: 'https://github.com/hijoushoku7', external: true },
-	{ label: 'Mail', href: 'mailto:hijoushoku88@gmail.com', external: false },
 ];
+
+const email = 'hijoushoku88@gmail.com';
 ---
 
 <!-- チェックボックスでメニュー開閉（JSなしのトグル） -->
@@ -35,6 +36,7 @@ const socials = [
 				rel={s.external ? 'noopener noreferrer' : undefined}
 			>{s.label}</a>
 		))}
+		<button class="btn mail-copy-btn" data-email={email}>Mail</button>
 	</div>
 
 </header>
@@ -57,6 +59,14 @@ const socials = [
 		if (!event.target.closest('a')) return;
 
 		if (toggle) toggle.checked = false;
+	});
+
+	const mailBtn = document.querySelector<HTMLButtonElement>('.mail-copy-btn');
+	mailBtn?.addEventListener('click', () => {
+		const email = mailBtn.dataset.email ?? '';
+		navigator.clipboard.writeText(email).then(() => {
+			window.dispatchEvent(new CustomEvent('copy-toast'));
+		});
 	});
 </script>
 
