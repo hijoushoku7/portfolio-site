@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HIJO Loader — プレビュー (A/B/C)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fontlibrary.org/face/minecraftia" type="text/css" />
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #1b1b1b;
+    color: #e8e8e8;
+    font-family: "Zen Kaku Gothic New", system-ui, sans-serif;
+    padding: 32px;
+  }
+  h1 { font-family: "DotGothic16", monospace; font-weight: 400; font-size: 18px; letter-spacing: .08em; margin: 0 0 4px; }
+  p.note { margin: 0 0 28px; color: #9a9a9a; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .card { border: 1px solid #333; border-radius: 12px; overflow: hidden; background: #222; }
+  .card > header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; border-bottom: 1px solid #333;
+    font-family: "DotGothic16", monospace; font-size: 12px; letter-spacing: .06em; color: #bdbdbd;
+  }
+  .card > header button {
+    font: inherit; font-size: 11px; color: #ddd; background: #333; border: 1px solid #444;
+    border-radius: 6px; padding: 3px 10px; cursor: pointer;
+  }
+  .card > header button:hover { background: #3d3d3d; }
+  .screen { position: relative; height: 300px; display: grid; place-items: center; overflow: hidden; }
+
+  /* ------- 共通: 文字型ウォーターフィル ------- */
+  @property --p { syntax: "<integer>"; initial-value: 0; inherits: false; }
+  .brand { position: relative; line-height: 1; user-select: none; }
+  .brand .layer { display: block; margin: 0; }
+  .brand .fill { position: absolute; inset: 0; }
+  .pct { margin-top: 22px; text-align: center; letter-spacing: .12em; font-size: 13px; color: #8f8f8f; }
+  .a .pct::after, .c .pct::after { content: counter(p) "%"; counter-reset: p var(--p); }
+
+  /* rise = 水位上昇 (下→上) / ripple = 横方向の波の流れ */
+  @keyframes rise   { from { background-position-y: 130px; } to { background-position-y: -210px; } }
+  @keyframes ripple { from { background-position-x: 0; }     to { background-position-x: -160px; } }
+  @keyframes count  { to { --p: 100; } }
+  @keyframes blink  { 50% { opacity: 0; } }
+
+  /* =========================================================
+     A. STILL WATER — なめらかサイン波 / 単色 / 明るい背景
+     ========================================================= */
+  .a .screen { background: #ededed; }
+  .a .brand { font-family: "Zen Kaku Gothic New", sans-serif; font-weight: 700; font-size: 116px; letter-spacing: .02em; }
+  .a .ink  { color: transparent; -webkit-text-stroke: 2px #2b2b2b; }
+  .a .fill {
+    color: transparent; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    background-repeat: repeat-x;
+    background-size: 160px 320px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='320' viewBox='0 0 160 320' preserveAspectRatio='none'%3E%3Cpath d='M0,20 C26,2 54,2 80,20 C106,38 134,38 160,20 L160,320 L0,320 Z' fill='%232f2f2f'/%3E%3C/svg%3E");
+    animation: rise 3s cubic-bezier(.45,.05,.25,1) forwards, ripple 2.4s linear infinite;
+  }
+  .a .pct { font-family: "DotGothic16", monospace; color: #555; animation: count 3s forwards; }
+
+  /* =========================================================
+     B. BOOT — 淡色のなめらかな波 / Minecraftia / JSでパーセント (signature)
+     ========================================================= */
+  .b .screen { background: #e8e8e8; }
+  .b .brand { font-family: "Minecraftia", monospace; font-size: 92px; letter-spacing: .06em; }
+  .b .ink  { color: transparent; -webkit-text-stroke: 3px #2a2a2a; }
+  .b .fill {
+    color: transparent; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    background-repeat: repeat-x;
+    background-size: 40px 320px;              /* 波1山=40px幅で横に敷き詰め */
+    /* SVGなし: radial(波の山) + linear(水本体の縦グラデ) だけで構成 */
+    background-image:
+      radial-gradient(circle at 50% 18px, #2f2f2f 9px, transparent 10px),
+      linear-gradient(to bottom, transparent 0 18px, #2f2f2f 18px, #2f2f2f 300px);
+    animation: rise 8.2s cubic-bezier(.45,.05,.25,1) forwards, ripple 3.6s linear infinite;
+  }
+  .b .screen::after { /* 走査線 (控えめ) */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px);
+  }
+  .b .pct {
+    font-family: "Minecraftia", monospace; color: #333; letter-spacing: .2em; font-size: 15px;
+  }
+  .b .pct .cur { display: inline-block; width: .55em; height: 1em; margin-left: .2em; background: #333;
+    vertical-align: -0.12em; animation: blink 1s steps(1) infinite; }
+
+  /* =========================================================
+     C. PHOSPHOR CRT — 暗色 / 発光グレー / フリッカー
+     ========================================================= */
+  .c .screen { background: #0e0e0e; }
+  .c .brand { font-family: "Zen Kaku Gothic New", sans-serif; font-weight: 700; font-size: 112px; letter-spacing: .03em; }
+  .c .ink  { color: transparent; -webkit-text-stroke: 1.5px #3a3a3a; }
+  .c .fill {
+    color: transparent; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    background-repeat: repeat-x;
+    background-size: 160px 320px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='320' viewBox='0 0 160 320' preserveAspectRatio='none'%3E%3Cpath d='M0,22 C30,6 50,6 80,22 C110,38 130,38 160,22 L160,320 L0,320 Z' fill='%23cfcfcf'/%3E%3C/svg%3E");
+    filter: drop-shadow(0 0 6px rgba(210,210,210,.55));
+    animation: rise 3s ease-out forwards, ripple 2.2s linear infinite, flick 3.2s steps(30) infinite;
+  }
+  @keyframes flick { 0%,100%{opacity:1} 47%{opacity:.92} 48%{opacity:.78} 49%{opacity:.95} }
+  .c .screen::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px);
+  }
+  .c .pct { font-family: "DotGothic16", monospace; color: #9fdca0; text-shadow: 0 0 6px rgba(150,230,150,.5);
+    letter-spacing: .18em; animation: count 3s forwards; }
+  .c .pct::before { content: "LOADING SYSTEM "; color: #7fb880; }
+</style>
+</head>
+<body>
+  <h1>HIJO LOADER — プレビュー</h1>
+  <p class="note">同じ技術（文字型に background-clip:text、波SVGを下から上昇＋横スクロール）で3方向。「Replay」で再生。実際の表示/非表示は本番でJS制御します。</p>
+
+  <div class="grid">
+    <!-- A -->
+    <section class="card a">
+      <header><span>A · STILL WATER</span><button data-replay>Replay</button></header>
+      <div class="screen">
+        <div>
+          <div class="brand">
+            <span class="layer ink">HIJO</span>
+            <span class="layer fill">HIJO</span>
+          </div>
+          <div class="pct"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- B -->
+    <section class="card b">
+      <header><span>B · BOOT / DITHER ★</span><button data-replay>Replay</button></header>
+      <div class="screen">
+        <div>
+          <div class="brand">
+            <span class="layer ink">HIJO</span>
+            <span class="layer fill">HIJO</span>
+          </div>
+          <div class="pct"><span class="num">0</span>%<span class="cur"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- C -->
+    <section class="card c">
+      <header><span>C · PHOSPHOR CRT</span><button data-replay>Replay</button></header>
+      <div class="screen">
+        <div>
+          <div class="brand">
+            <span class="layer ink">HIJO</span>
+            <span class="layer fill">HIJO</span>
+          </div>
+          <div class="pct"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // B の充填時間 (CSS の rise と一致させる)
+    var B_MS = 8200;
+
+    // 0 → 100 をなめらかにカウントアップ (easeInOutQuad)
+    function runCount(card) {
+      var num = card.querySelector(".num");
+      if (!num) return;
+      var start = null;
+      function tick(now) {
+        if (start === null) start = now;
+        var t = Math.min(1, (now - start) / B_MS);
+        var eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        num.textContent = Math.round(eased * 100);
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // デモ用ハーネス（本番ロジックではありません）: アニメを再生し直す
+    document.querySelectorAll("[data-replay]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var card = btn.closest(".card");
+        card.querySelectorAll(".fill, .pct").forEach(function (el) {
+          el.style.animation = "none";
+          void el.offsetWidth; // reflow で再トリガ
+          el.style.animation = "";
+        });
+        if (card.matches(".b")) runCount(card);
+      });
+    });
+
+    // 初回ロードで B のカウントを開始
+    window.addEventListener("load", function () {
+      document.querySelectorAll(".card.b").forEach(runCount);
+    });
+  </script>
+</body>
+</html>
