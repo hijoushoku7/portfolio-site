@@ -1,3 +1,8 @@
+---
+import Loader from '../components/Loader.astro';
+import Curtain from '../components/Curtain.astro';
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -9,7 +14,23 @@
 		<meta name="theme-color" content="#525252" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href="https://fontlibrary.org/face/minecraftia" type="text/css" />
+		<!-- Minecraftia: 自前ホスト + preload でローダー表示時に確実に適用 -->
+		<link
+			rel="preload"
+			href="/fonts/MinecraftiaRegular.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin
+		/>
+		<style is:inline>
+			@font-face {
+				font-family: 'Minecraftia';
+				src: url('/fonts/MinecraftiaRegular.ttf') format('truetype');
+				font-weight: normal;
+				font-style: normal;
+				font-display: block;
+			}
+		</style>
 		<link
 			href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
 			rel="stylesheet"
@@ -17,6 +38,8 @@
 		<title>Hijoushokuのホームページ</title>
 	</head>
 	<body>
+		<Loader />
+		<Curtain />
 		<slot />
 	</body>
 </html>

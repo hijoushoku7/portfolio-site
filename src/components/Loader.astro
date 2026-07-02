@@ -1,0 +1,175 @@
+---
+// Loader.astro — 「HIJO」文字型ウォーターフィルのローディング画面
+//   ・全面オーバーレイ。<body> 先頭に置き、最初のペイントから画面を覆う
+//   ・水位とパーセントは JS で一元管理（同じ進捗 p から両方を更新するので必ず一致）
+//   ・波の横流れ(ripple)だけ CSS。SVGは不使用（radial + linear グラデのみ）
+//   ・表示終了は JS 制御: window.load 完了 かつ DURATION 経過でフェードアウト→削除
+//   ・調整するのは JS の DURATION 定数ひとつだけ
+---
+
+<div id="loader" class="loader" role="status" aria-label="読み込み中">
+	<div class="brand">
+		<span class="layer ink">HIJO</span>
+		<span class="layer fill" style="-webkit-background-clip: text; background-clip: text;">HIJO</span>
+	</div>
+	<p class="pct"><span class="num">0</span>%<span class="cur"></span></p>
+</div>
+
+<noscript>
+	<style>
+		#loader {
+			display: none !important;
+		}
+	</style>
+</noscript>
+
+<style>
+	.loader {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		display: grid;
+		place-content: center;
+		justify-items: center;
+		gap: 22px;
+		background: #e8e8e8;
+		transition: opacity 2s ease;
+	}
+	.loader.is-hidden {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.brand {
+		position: relative;
+		line-height: 1;
+		user-select: none;
+		font-family: 'Minecraftia', monospace;
+		font-size: 92px;
+		letter-spacing: 0.06em;
+	}
+	.layer {
+		display: block;
+		margin: 0;
+	}
+	/* 空の器（アウトライン） */
+	.ink {
+		color: transparent;
+		-webkit-text-stroke: 3px #2a2a2a;
+	}
+	/* 水（文字型に切り抜き）。水位(background-position-y)は JS が毎フレーム更新。 */
+	.fill {
+		position: absolute;
+		inset: 0;
+		color: transparent;
+		-webkit-text-fill-color: transparent;
+		-webkit-background-clip: text;
+		background-clip: text;
+		background-repeat: repeat-x;
+		background-size: 40px 320px; /* 波1山 = 40px 幅で敷き詰め */
+		background-position-y: 92px; /* 初期位置＝空（JS未実行時のちらつき防止） */
+		background-image:
+			radial-gradient(circle at 50% 18px, #2f2f2f 9px, transparent 10px), /* 波の山 */
+			linear-gradient(to bottom, transparent 0 18px, #2f2f2f 18px, #2f2f2f 300px); /* 水本体 */
+		animation: ripple 3.6s linear infinite; /* 横流れのみ CSS */
+	}
+
+	.pct {
+		margin: 0;
+		font-family: 'Minecraftia', monospace;
+		color: #333;
+		letter-spacing: 0.2em;
+		font-size: 15px;
+	}
+	.cur {
+		display: inline-block;
+		width: 0.55em;
+		height: 1em;
+		margin-left: 0.2em;
+		background: #333;
+		vertical-align: -0.12em;
+		animation: blink 1s steps(1) infinite;
+	}
+
+	/* ripple = 波の横流れ（40px×4 = 160px でシームレスにループ） */
+	@keyframes ripple {
+		from {
+			background-position-x: 0;
+		}
+		to {
+			background-position-x: -160px;
+		}
+	}
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.fill {
+			background-position-y: -28px; /* 満杯で静止（JS未実行時のフォールバック） */
+			animation: none;
+		}
+		.cur {
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	// 充填時間 = 最低表示時間（この定数ひとつだけ調整すればよい）
+	const DURATION = 2000;
+
+	// 水位(background-position-y)の範囲: 92px(空) → -28px(満杯)。文字高さぴったり。
+	const FROM_Y = 92;
+	const TO_Y = -28;
+
+	const loader = document.getElementById('loader');
+	if (loader) {
+		const fill = loader.querySelector<HTMLElement>('.fill');
+		const num = loader.querySelector<HTMLElement>('.num');
+		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		// 進捗 p(0→1) から「水位」と「パーセント」を同時に更新 → 常に一致
+		const render = (p: number) => {
+			if (fill) fill.style.backgroundPositionY = FROM_Y + (TO_Y - FROM_Y) * p + 'px';
+			if (num) num.textContent = String(Math.round(p * 100));
+		};
+
+		if (reduce) {
+			render(1); // 動きを避け、満杯・100% で静止
+		} else {
+			const t0 = performance.now();
+			const tick = (now: number) => {
+				const t = Math.min(1, (now - t0) / DURATION);
+				const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // easeInOutQuad
+				render(eased);
+				if (t < 1) requestAnimationFrame(tick);
+			};
+			requestAnimationFrame(tick);
+		}
+
+		// window.load 完了 かつ DURATION 経過でフェードアウト→削除
+		const hide = () => {
+			// performance.now() はページ開始からの経過ms
+			const wait = Math.max(0, DURATION - performance.now());
+			setTimeout(() => {
+				
+				// フェードアウト開始と同時に幕(Curtain)へ合図（A: 少し重ねて滑らかに繋ぐ）
+				window.dispatchEvent(new Event('loader:done'));
+				setTimeout(()=>{
+					loader.classList.add('is-hidden');
+				},2000);
+				loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+				setTimeout(() => loader.remove(), 800); // フォールバック
+			}, wait + 500);
+		};
+
+		if (document.readyState === 'complete') {
+			hide();
+		} else {
+			window.addEventListener('load', hide);
+		}
+	}
+</script>
