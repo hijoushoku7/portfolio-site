@@ -6,11 +6,11 @@ on:
       - main
     paths:
       - 'src/**'
-      - '.github/workflows/*'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
