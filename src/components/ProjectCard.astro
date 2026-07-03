@@ -17,7 +17,7 @@ const {
 } = Astro.props;
 ---
 
-<button class="card" type="button" data-modal-open={id}>
+<button class="card fadeup" type="button" data-modal-open={id}>
 	<div class="card__thumb">
 		{images.length > 0 ? (
 			<img class="card__thumb-img" src={images[0]} alt={title} loading="lazy" />
@@ -129,9 +129,33 @@ const {
 		word-break: break-all;
 	}
 
+	.card.fadeup {
+		opacity: 0; /* is-animated が付くまで隠す */
+	}
+
+	.card.fadeup.is-animated {
+	animation: fadeup 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+	}
+	
+	@keyframes fadeup {
+	0% {
+		transform: translateY(30px);
+		opacity: 0;
+	}
+	80% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	}
+
+	/* スマホでも2カラム（画像＋本文）を維持し、サムネイルを縮小 */
 	@media (max-width: 480px) {
 		.card {
-			grid-template-columns: 1fr;
+			grid-template-columns: 84px 1fr;
+			gap: 0.8rem;
 		}
 	}
 </style>

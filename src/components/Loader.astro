@@ -155,7 +155,6 @@
 			// performance.now() はページ開始からの経過ms
 			const wait = Math.max(0, DURATION - performance.now());
 			setTimeout(() => {
-				
 				// フェードアウト開始と同時に幕(Curtain)へ合図（A: 少し重ねて滑らかに繋ぐ）
 				window.dispatchEvent(new Event('loader:done'));
 				setTimeout(()=>{
@@ -163,7 +162,7 @@
 				},2000);
 				loader.addEventListener('transitionend', () => loader.remove(), { once: true });
 				setTimeout(() => loader.remove(), 800); // フォールバック
-			}, wait + 500);
+			}, wait + 800);
 		};
 
 		if (document.readyState === 'complete') {
