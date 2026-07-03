@@ -1,8 +1,4 @@
 ---
-// ▼ コンポーネントスクリプト（ビルド時に実行）
-//   ページ全体の骨格をここで組み立てる。細かいパーツは components/ に分離済み。
-//   DESIGN.md の世界観を「グレー2トーン」で抽出したプロトタイプ。
-//   レトロPC(WebGL)部分は実装せず、背景は public/mainBackground.png を使用。
 import Nav from './Nav.astro';
 import Hero from './Hero.astro';
 import Section from './Section.astro';
@@ -28,7 +24,7 @@ const projects = [
 	{
 		title: 'ポートフォリオサイト',
 		description: 'Astro + Reactで制作した自己紹介・制作物紹介のポートフォリオサイト',
-		tags: ['Astro','React','TypeScript', 'Github Actions'],
+		tags: ['Astro','TypeScript', 'Github Actions'],
 		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。デザインはできるだけシンプルで伝わりやすくしており、白が好きなのでモノクロで統一しています。',
 		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、静的HTMLとしてページを構成しています。\n ・Github Actionsを利用し、CI(型チェック)、CDを実装しています。CDはtailscale OAuthを利用して自宅サーバーにSSH接続してdockerコンテナを更新しています。\n ・TypeScriptで型安全に開発しています。',
 		images: ['/works/portfolio1.png'] as string[],
@@ -95,7 +91,7 @@ const affiliations :Array<{
 		name: 'ローム記念館プロジェクト Campus Crew',
 		role: 'メンバー',
 		period: '2026.04 - 現在',
-		description: 'AIを用いたSNS開発や、マネジメントを中心に起業を目指して活動しています。',
+		description: '企業と学生をつなげるSNSをチーム開発で行い、起業を目指して活動しています。',
 	},
 	{
 		name: 'プログラミング教室　講師',
@@ -110,7 +106,7 @@ const activities = [
 	{
 		title: 'Campus Crew ハッカソン',
 		date: '2026.6.22',
-		result: '優勝',
+		result: '優勝🎉',
 		description: 'PR要約BOTと大学のシングルサインオンの認証簡略化chrome拡張機能を作成',
 	}
 ];
@@ -152,6 +148,7 @@ const skillCategories = [
 		skills: [
 			{ label: 'Node.js', icon: '🟢' },
 			{ label: 'SQL', icon: '🐘' },
+			{ label: 'Java (少しだけ)', icon:'☕'},
 		],
 	},
 	{
@@ -181,7 +178,7 @@ const skillCategories = [
 			{ label: 'Astro', icon: '🚀' },
 			{ label: 'PostgreSQL', icon: '🐘' },
 			{ label: 'Prisma', icon: '🔺' },
-			{ label: 'Go', icon: 'Go' },
+			{ label: 'Github Actions', icon: '🐈' },
 		],
 	},
 ];
@@ -471,4 +468,16 @@ const skillCategories = [
 	addEventListener('scroll', update, { passive: true });
 	addEventListener('resize', update);
 	update();
+
+	// 制作物カードを監視し、画面内に入ったら .is-animated を付与してフェードイン
+	const cards = document.querySelectorAll('.card');
+	const cardObserver = new IntersectionObserver((entries) => {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('is-animated');
+				cardObserver.unobserve(entry.target); // 一度だけ発火
+			}
+		});
+	}, { threshold: 0.2 });
+	cards.forEach((card) => cardObserver.observe(card));
 </script>
