@@ -18,15 +18,17 @@ const projects = [
 		description: 'Proxmox VEを利用し、自宅に24時間起動するサーバーを構築',
 		tags: ['Docker','Ubuntu','ShellScript','Traefik','Proxmox VE','Tailscale'],
 		overview: 'Proxmox VEを使って複数のゲームサーバーとWebサービス、開発環境を構築しています。',
-		mechanism: '・webサーバーはcloudflare tunnelを利用してポート開放を行わず外部公開しており、リバースプロキシを使ってルーティングを行っています。\n ・tailscaleを利用して外部ネットワークからSSH接続をしています \n ',
-		images: ['/works/home-server.png'] as string[], // 例: ['/works/alpha-1.png', '/works/alpha-2.png']
+		issue: 'cloudflare tunnelで各サービス(dockerコンテナ)へのルーティングを行っていたため、DNSレコードを毎回Cloudflareのダッシュボード経由で行う必要があった',
+		solution: '・リバースプロキシとしてtraefikを採用し、ラベルを付与したコンテナを立ち上げることで自動ルーティングを実現 \n ・nginxを採用しなかった理由はコンテナを追加するたびに設定する手間を削減したいため	',
+		images: ['/works/home-server.png'] as string[],
 	},
 	{
 		title: 'ポートフォリオサイト',
 		description: 'Astro + Reactで制作した自己紹介・制作物紹介のポートフォリオサイト',
 		tags: ['Astro','TypeScript', 'Github Actions'],
 		overview: '自己紹介、制作物、技術スタックをまとめた個人ポートフォリオサイトです。デザインはできるだけシンプルで伝わりやすくしており、白が好きなのでモノクロで統一しています。',
-		mechanism: '・Astro(v7)を静的サイトフレームワークとして採用し、静的HTMLとしてページを構成しています。\n ・Github Actionsを利用し、CI(型チェック)、CDを実装しています。CDはtailscale OAuthを利用して自宅サーバーにSSH接続してdockerコンテナを更新しています。\n ・TypeScriptで型安全に開発しています。',
+		issue: '・ローディング画面で使用しているロゴのフォントが最初に読み込まれず違うフォントになる問題 \n ・devtoolsのnetworkを監視するとfetch時間が長い画像を先にfetchしていた',
+		solution: '・<link rel=preconnect>を使用しハンドシェイクを事前に終わらせることでフォント取得を最適化 \n ・ 外部apiではなく自宅サーバーでフォントをホストすることでfetch時間を短縮',
 		images: ['/works/portfolio1.png'] as string[],
 	},
 	{
@@ -34,7 +36,8 @@ const projects = [
 		description: '自宅サーバーを利用した安全な身内向けのファイル共有サービス',
 		tags: ['React', 'Next.js','tus','postgreSQL','Auth.js','Prisma'],
 		overview: '身内向けで認証が必要なファイル共有サービス。自分のデバイス間共有や外部にアップロードしたくないファイルを簡単にWeb上にアップロードできます。',
-		mechanism: '・自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。\n ・念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。 \n ・ファイルを共有後はログイン可能なユーザーのみがダウンロード可能なリンクを共有できます。 \n ・認証はAuth.js/jwtでステートレスに行っています。',
+		issue: '自宅サーバーでホストしており、cloudflare tunnelで接続しているためアップロード制限がかかり100MBまでしかファイルをアップロードできない',
+		solution: '・ファイルを1チャンク50mbごとに分け、再開可能ファイル送信プロトコルtusを利用して分割送信することで解決。\n ・tusはhttpベースのファイル送信プロトコルのため採用',
 		images: ['/works/image.png','/works/image1.png'] as string[],
 	},
 	{
@@ -42,36 +45,63 @@ const projects = [
 		description: 'Github WebhooksでSlack上にPR通知＆要約、ランキングを生成するBOT',
 		tags: ['Javascript','Google App Script','Github Webhooks'],
 		overview: 'Github Webhooksを利用してPR通知を受け取り、通知、AI要約、ランキングを生成するBOTです。\n ・PRをスムーズに行うため、[詳細を聞く]ボタンを押すとさらに詳細な問題点やチェックすべき点を洗い出し、要約してくれます。 \n ・週に一度、誰が一番マージやプルリクエストを送信したかをランキングとして表示する機能も搭載しています。',
-		mechanism: '・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。 \n ・google spreadsheetをデータベースとしてPRやマージを保存し、集計してランキングを生成します。',
+		issue: '',
+		solution: '',
 		images: ['/works/image2.png'] as string[],
 	},
 	{
 		title: '自宅サーバー+tmuxで外からでもAI開発',
 		description: '自宅サーバーにtailscale+terminusを利用して接続できる開発環境',
 		tags: ['Terminus','tmux','ubuntu','tailscale','git','claude code','codex'],
-		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。 ',
-		mechanism: '\n ・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。 \n ・実際にwebアプリをデプロイするコンテナとは独立させているので、環境変数が盗まれることを防いでいます。\n ・また、接続できるデバイスはtailscaleネットワークに接続しているもののみに限定しているため安全に通信ができます。',
+		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。 \n ・この方法だとclaude remote sessionでは困難なファイル閲覧やhooks追加が可能です。 \n tmuxとweztermのdomain機能でセッション永続化を迷いましたが、スマホや別デバイスから接続することを考えtmuxを採用しました。',
+		issue: '・Weztermのマルチプレクサ機能を利用してセッション永続化をしていたため、スマホなどから同じセッションに接続できない',
+		solution: 'マルチプレクサとしてtmuxを採用して異なるデバイスからでも同じセッションに接続可能に',
 		images: ['/works/tmux.png','/works/tmux1.png'] as string[],
-	},
-	{
-		title: 'Minecraftサーバー管理アプリ',
-		description: 'Minecraftのサーバーの新規構築、管理、運用を簡単にするWebアプリ',
-		tags: ['Next.js','Docker','WebSocket','Hono'],
-		overview: '・Ubuntu server上でMinecraftサーバーの新規構築、管理、運用をローカルで公開するWebアプリ上で一元管理できます。  ',
-		mechanism: '・itzg/minecraftServer Dockerイメージを利用し、APIサーバーからDocker Engine APIを叩くことでコンテナの生成、停止、起動などを行います。 \n ・WebSocketを利用してリアルタイムでコンソールを表示させることができます。 \n ・既存機能のRCONを利用してコマンドを送信できます。',
-		images: ['/works/mc2.png','/works/mc1.png'] as string[],
 	},
 ];
 
 /*
+	新形式のテンプレート:
 	{
 		title: 'Project Gamma',
 		description: 'プロジェクトの概要をここに書く。リンク先で詳細を見せる想定。',
 		tags: ['Node', 'API'],
 		overview: '何を作ったかをここに書く。',
-		mechanism: 'どんな仕組みで動いているかをここに書く。',
+		issue: 'どんな課題・問題があったかをここに書く。',
+		solution: 'その課題をどう解決したかをここに書く。',
 		images: [] as string[],
 	}
+
+	── 旧 mechanism（仕組み）の内容を退避。issue / solution へ振り分ける際の下書きに使う ──
+
+	自宅サーバー構築:
+	・webサーバーはcloudflare tunnelを利用してポート開放を行わず外部公開しており、リバースプロキシを使ってルーティングを行っています。
+	・tailscaleを利用して外部ネットワークからSSH接続をしています
+
+	ポートフォリオサイト:
+	・Astro(v7)を静的サイトフレームワークとして採用し、静的HTMLとしてページを構成しています。
+	・Github Actionsを利用し、CI(型チェック)、CDを実装しています。CDはtailscale OAuthを利用して自宅サーバーにSSH接続してdockerコンテナを更新しています。
+	・TypeScriptで型安全に開発しています。
+
+	チーム内&デバイス間簡易ファイル共有:
+	・自宅サーバーにWebサーバーを設置し、ClamAvでウイルススキャンを行った後にファイルを保存します。
+	・念のためアクセスログやアップロードログなどを保存しており、認証も堅牢にしているためセキュリティも安全です。
+	・ファイルを共有後はログイン可能なユーザーのみがダウンロード可能なリンクを共有できます。
+	・認証はAuth.js/jwtでステートレスに行っています。
+
+	Pull Request通知 & 要約Bot:
+	・Google App Scriptで常時起動しており、Github Webhookで受け取ったPR内容をデータベース上に保存したのち、Slack Botで通知を送信します。またPRを受け取るとGemini APIに自動的にdiffが渡され、内容の要約を生成します。
+	・google spreadsheetをデータベースとしてPRやマージを保存し、集計してランキングを生成します。
+
+	自宅サーバー+tmuxで外からでもAI開発:
+	・tmuxを用いてセッション管理を行うことで外部からもセッションが切れることなくclaude codeやcodexで開発する環境を整えています。
+	・実際にwebアプリをデプロイするコンテナとは独立させているので、環境変数が盗まれることを防いでいます。
+	・また、接続できるデバイスはtailscaleネットワークに接続しているもののみに限定しているため安全に通信ができます。
+
+	Minecraftサーバー管理アプリ:
+	・itzg/minecraftServer Dockerイメージを利用し、APIサーバーからDocker Engine APIを叩くことでコンテナの生成、停止、起動などを行います。
+	・WebSocketを利用してリアルタイムでコンソールを表示させることができます。
+	・既存機能のRCONを利用してコマンドを送信できます。
 */
 
 // ▼ 所属（学科・研究室・プロジェクトなど）。内容は後で差し替える想定のテンプレート。
@@ -218,7 +248,8 @@ const skillCategories = [
 						description={p.description}
 						tags={p.tags}
 						overview={p.overview}
-						mechanism={p.mechanism}
+						issue={p.issue}
+						solution={p.solution}
 						images={p.images}
 					/>
 				))}
