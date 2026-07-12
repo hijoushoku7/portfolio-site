@@ -8,7 +8,8 @@ const {
 	id,
 	title,
 	overview = '',
-	mechanism = '',
+	issue = '',
+	solution = '',
 	tags = [],
 	images = [],
 } = Astro.props;
@@ -39,10 +40,17 @@ const {
 			</section>
 		)}
 
-		{mechanism && (
+		{issue && (
 			<section class="modal__section">
-				<h4 class="modal__heading">仕組み</h4>
-				<p class="modal__text">{mechanism}</p>
+				<h4 class="modal__heading">課題</h4>
+				<p class="modal__text">{issue}</p>
+			</section>
+		)}
+
+		{solution && (
+			<section class="modal__section">
+				<h4 class="modal__heading">解決策</h4>
+				<p class="modal__text">{solution}</p>
 			</section>
 		)}
 
