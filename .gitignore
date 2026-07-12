@@ -25,5 +25,5 @@ pnpm-debug.log*
 
 ../docs/DESIGN.md
 
-./.agents
-./.claude
+.agents
+.claude
