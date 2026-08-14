@@ -60,7 +60,6 @@ const projects = [
 	},
 ];
 
-// ▼ 所属（学科・研究室・プロジェクトなど）。内容は後で差し替える想定のテンプレート。
 const affiliations :Array<{
 	name:string;
 	role:string;
@@ -68,16 +67,16 @@ const affiliations :Array<{
 	description:string;
 }>= [
 	{
-		name: '同志社大学情報システムデザイン学科',
+		name: '情報系学科',
 		role: '学部2回生',
 		period: '2025.04 - 現在',
 		description: 'コンピューターサイエンスやプログラミング、大学数学などを中心に学んでいます。',
 	},
 	{
-		name: 'ローム記念館プロジェクト Campus Crew',
+		name: 'SNS開発プロジェクト',
 		role: 'メンバー',
 		period: '2026.04 - 現在',
-		description: '企業と学生をつなげるSNSをチーム開発で行い、起業を目指して活動しています。',
+		description: '企業と学生をつなげるSNS開発をチームで行っており、起業を目標に活動しています。',
 	},
 	{
 		name: 'プログラミング教室　講師',
@@ -87,17 +86,17 @@ const affiliations :Array<{
 	}
 ];
 
-// ▼ Activities（ハッカソン・大会など）。内容は後で差し替える想定のテンプレート。
+// Activities
 const activities = [
 	{
-		title: 'Campus Crew ハッカソン',
+		title: 'SNS開発チーム内ハッカソン',
 		date: '2026.6.22',
 		result: '優勝🎉',
 		description: 'PR要約BOTと大学のシングルサインオンの認証簡略化chrome拡張機能を作成',
 	}
 ];
 
-// ▼ 資格。取得した資格を追加すると Qualifications セクションに表示される。
+//  資格
 const qualifications: Array<{
 	name: string;
 	acquiredAt?: string;
@@ -141,9 +140,7 @@ const skillCategories = [
 		name: 'DevOps',
 		skills: [
 			{ label: 'Docker', icon: '🐳' },
-			{ label: 'Proxmox VE', icon: '🖥️' },
-			{ label: 'Cloudflare', icon: '☁️' },
-			{ label: 'Tailscale', icon: '🔗' },
+			{ label: 'Cloudflare *', icon: '☁️' },
 			{ label: 'Linux', icon: '🐧' },
 			{ label: 'Git', icon: '🔧' },
 		],
@@ -159,12 +156,12 @@ const skillCategories = [
 	{
 		name: '勉強中の技術',
 		skills: [
-			{ label: 'Traefik', icon: '🚦' },
 			{ label: 'Auth.js', icon: '🔐' },
 			{ label: 'Astro', icon: '🚀' },
 			{ label: 'PostgreSQL', icon: '🐘' },
 			{ label: 'Prisma', icon: '🔺' },
 			{ label: 'Github Actions', icon: '🐈' },
+			{ label: 'GO', icon: 'G' },
 		],
 	},
 ];
