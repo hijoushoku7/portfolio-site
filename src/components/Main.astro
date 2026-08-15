@@ -53,9 +53,9 @@ const projects = [
 		title: '自宅サーバー+tmuxで外からでもAI開発',
 		description: '自宅サーバーにtailscale+terminusを利用して接続できる開発環境',
 		tags: ['Terminus','tmux','ubuntu','tailscale','git','claude code','codex'],
-		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。 \n ・この方法だとclaude remote sessionでは困難なファイル閲覧やhooks追加が可能です。 \n tmuxとweztermのdomain機能でセッション永続化を迷いましたが、スマホや別デバイスから接続することを考えtmuxを採用しました。',
+		overview: '・webサービスとは独立したubuntu serverを構築し、terminusを通してスマホなどから自宅のコンソールに接続します。\n ・セッションを切らすことなくclaude codeなどを外出中でも利用することができます。 \n ・この方法だとclaude remote sessionでは困難なファイル閲覧やhooks追加が可能です。 \n・ tmuxとweztermのdomain機能でセッション永続化を迷いましたが、スマホや別デバイスから接続することを考えtmuxを採用しました。',
     issue: '・Weztermのマルチプレクサ機能を利用してセッション永続化をしていたため、スマホなどから同じセッションに接続できない \n ・開発環境を作り直す際に構築の手間がかかる',
-		solution: '\n ターミナルマルチプレクサとしてtmuxを採用して異なるデバイスからでも同じセッションに接続可能に\n ・CLIツールや言語パッケージなどをmiseでまとめて管理、github上で管理していつでも構築できるように',
+		solution: '\n ・ターミナルマルチプレクサとしてtmuxを採用して異なるデバイスからでも同じセッションに接続可能に\n ・CLIツールや言語パッケージなどをmiseでまとめて管理、github上で管理していつでも構築できるように',
 		images: ['/works/tmux.avif','/works/tmux1.avif'] as string[],
 	},
 ];
