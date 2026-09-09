@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 .agents
 .claude
+# 自前サブセット化フォントの生成物 (npm run subset で再生成)
+public/fonts/generated/
+src/generated/

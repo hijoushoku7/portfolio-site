@@ -6,6 +6,13 @@ on:
       - main
     paths:
       - 'src/**'
+      - 'fonts/**'
+      - 'scripts/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'Dockerfile'
+      - 'nginx.conf'
 
 jobs:
   deploy:
