@@ -1,7 +1,7 @@
 ---
 import Loader from '../components/Loader.astro';
 import Curtain from '../components/Curtain.astro';
-import {Font} from 'astro:assets';
+import fontCss from '../generated/fonts.css?raw';
 ---
 
 <!doctype html>
@@ -14,8 +14,7 @@ import {Font} from 'astro:assets';
 		<link rel="icon" href="/works/icon.avif" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content="#525252" />
-		<Font cssVariable="--font-zen-kaku" />
-		<Font cssVariable="--font-dotgothic16" />
+		<style is:inline set:html={fontCss}></style>
 		
 		<link
 			rel="preload"

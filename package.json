@@ -6,7 +6,10 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "subset": "node scripts/subset-fonts.mjs",
+    "predev": "npm run subset",
     "dev": "astro dev",
+    "prebuild": "npm run subset",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
