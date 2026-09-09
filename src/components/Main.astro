@@ -269,7 +269,7 @@ const skillCategories = [
 	:root {
 		/* メインカラー＝グレー2トーン（純白/純黒を避ける） */
 		--color: #484848; /* 前景・テキスト・枠線（ダークグレー） */
-   		--black: #262626;
+   		--black: #131212;
 		--paper: #e6e6e6; /* カード/ラベルの地（ライトグレー、旧ベージュの代わり） */
 		--edge: #cfcfcf; /* 1pxの薄い縁取り */
 
@@ -335,7 +335,7 @@ const skillCategories = [
 	}
 	.link {
 		font-family: var(--font-body);
-		color: var(--color);
+		color: var(--black);
 		background: var(--paper);
 		text-decoration: none;
 		padding: 0.15rem 0.4rem;
@@ -390,8 +390,9 @@ const skillCategories = [
 	.activities__meta {
 		font-family: var(--font-pixel);
 		font-size: 0.86rem;
-		opacity: 0.7;
+		opacity: 0.9;
 		margin: 0 0 0.5rem;
+		color: var(--black);
 	}
 	.affiliation__desc,
 	.activities__desc {
